@@ -1,0 +1,147 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model cartera {
+  id                Int      @id @default(autoincrement())
+  valor             Int
+  fecha_vencimiento DateTime @db.Date
+  estado            Boolean? @default(false)
+  facturas_venta    Int
+  empresa_id        Int?
+  empresa           empresa? @relation(fields: [empresa_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "cartera_ibfk_1")
+
+  @@index([empresa_id], map: "empresa_id")
+}
+
+model categoria {
+  id            Int        @id @default(autoincrement())
+  flujo_caja_id Int
+  efectivo      Int?       @default(0)
+  datafono      Int?       @default(0)
+  transferencia Int?       @default(0)
+  gastos        Int?       @default(0)
+  ingresos      Int?
+  flujo_caja    flujo_caja @relation(fields: [flujo_caja_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "categoria_ibfk_1")
+
+  @@index([flujo_caja_id], map: "flujo_caja_id")
+}
+
+model cuadro_ventas {
+  id                Int     @id @default(autoincrement())
+  empresa_id        Int
+  ventas_ma_ana     Float?  @default(0) @map("ventas_mañana") @db.Float
+  ventas_tarde      Float?  @default(0) @db.Float
+  ventas_totales    Float?  @db.Float
+  efectivo          Float?  @default(0) @db.Float
+  datafono          Float?  @default(0) @db.Float
+  transferencia     Float?  @default(0) @db.Float
+  propinas          Float?  @default(0) @db.Float
+  iva               Float?  @default(0) @db.Float
+  hipoconsumo       Float?  @default(0) @db.Float
+  venta_neta        Float?  @db.Float
+  tks               Int
+  tks_promedio      Float?  @db.Float
+  epayco            Float?  @default(0) @db.Float
+  ventas_cafe       Float?  @default(0) @db.Float
+  ventas_bar        Float?  @default(0) @db.Float
+  ventas_mercado    Float?  @default(0) @db.Float
+  gastos_caja_menor Float?  @default(0) @db.Float
+  empresa           empresa @relation(fields: [empresa_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "cuadro_ventas_ibfk_1")
+
+  @@index([empresa_id], map: "empresa_id")
+}
+
+model cuenta {
+  id                  Int                   @id @default(autoincrement())
+  banco               String                @db.VarChar(20)
+  empresa_id          Int
+  numero              String                @db.VarChar(20)
+  tipo                cuenta_tipo
+  empresa             empresa               @relation(fields: [empresa_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "cuenta_ibfk_1")
+  registro_movimiento registro_movimiento[]
+
+  @@index([empresa_id], map: "empresa_id")
+}
+
+model cuenta_pendiente {
+  id             Int      @id @default(autoincrement())
+  proyecto       String   @db.VarChar(50)
+  nit            Int?
+  proveedor      String?  @db.VarChar(100)
+  nfactura       String?  @db.VarChar(20)
+  fecha_recibido DateTime @db.Date
+  estado         String?  @default("CXP") @db.VarChar(5)
+  inmediato      Int?
+  dias_30        Int?
+  dias_60        Int?
+  total          Int?
+  fecha_vencida  DateTime @db.Date
+  empresa_id     Int
+  empresa        empresa  @relation(fields: [empresa_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "cuenta_pendiente_ibfk_1")
+
+  @@index([empresa_id], map: "empresa_id")
+}
+
+model empresa {
+  id                                          Int                @id @default(autoincrement())
+  nombre                                      String             @unique(map: "nombre") @db.VarChar(30)
+  cartera                                     cartera[]
+  cuadro_ventas                               cuadro_ventas[]
+  cuenta                                      cuenta[]
+  cuenta_pendiente                            cuenta_pendiente[]
+  flujo_caja_empresaToflujo_caja_empresa_id   flujo_caja[]       @relation("empresaToflujo_caja_empresa_id")
+  flujo_caja_empresaToflujo_caja_categoria_id flujo_caja[]       @relation("empresaToflujo_caja_categoria_id")
+  registro_ventas                             registro_ventas[]
+}
+
+model flujo_caja {
+  id                                       Int         @id @default(autoincrement())
+  fecha                                    DateTime    @db.Date
+  empresa_id                               Int
+  categoria_id                             Int
+  empresa_empresaToflujo_caja_empresa_id   empresa     @relation("empresaToflujo_caja_empresa_id", fields: [empresa_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "flujo_caja_ibfk_1")
+  empresa_empresaToflujo_caja_categoria_id empresa     @relation("empresaToflujo_caja_categoria_id", fields: [categoria_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "flujo_caja_ibfk_2")
+  categoria                                categoria[]
+
+  @@index([categoria_id], map: "categoria_id")
+  @@index([empresa_id], map: "empresa_id")
+}
+
+model registro_movimiento {
+  id             Int      @id @default(autoincrement())
+  fecha          DateTime @default(dbgenerated("(curdate())")) @db.Date
+  saldo_inicial  Float    @db.Float
+  ingreso        Float?   @default(0) @db.Float
+  pago           Float?   @default(0) @db.Float
+  pago_impuesto  Float?   @default(0) @db.Float
+  gasto_bancario Float?   @default(0) @db.Float
+  cuenta_id      Int?
+  saldo          Float?   @db.Float
+  cuenta         cuenta?  @relation(fields: [cuenta_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "registro_movimiento_ibfk_1")
+
+  @@index([cuenta_id], map: "cuenta_id")
+}
+
+model registro_ventas {
+  id          Int      @id @default(autoincrement())
+  fecha       DateTime @db.Date
+  empresa_id  Int
+  cantidad    Int
+  producto    String   @db.VarChar(20)
+  valor_total Int
+  empresa     empresa  @relation(fields: [empresa_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "registro_ventas_ibfk_1")
+
+  @@index([empresa_id], map: "empresa_id")
+}
+
+enum cuenta_tipo {
+  corriente
+  ahorros
+  fiducuenta
+}
