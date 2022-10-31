@@ -98,6 +98,7 @@ model empresa {
   flujo_caja_empresaToflujo_caja_empresa_id   flujo_caja[]       @relation("empresaToflujo_caja_empresa_id")
   flujo_caja_empresaToflujo_caja_categoria_id flujo_caja[]       @relation("empresaToflujo_caja_categoria_id")
   registro_ventas                             registro_ventas[]
+  user                                        user[]
 }
 
 model flujo_caja {
@@ -136,6 +137,16 @@ model registro_ventas {
   producto    String   @db.VarChar(20)
   valor_total Int
   empresa     empresa  @relation(fields: [empresa_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "registro_ventas_ibfk_1")
+
+  @@index([empresa_id], map: "empresa_id")
+}
+
+model user {
+  id         Int     @id @default(autoincrement())
+  username   String  @db.VarChar(8)
+  password   String  @db.VarChar(30)
+  empresa_id Int
+  empresa    empresa @relation(fields: [empresa_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_ibfk_1")
 
   @@index([empresa_id], map: "empresa_id")
 }
