@@ -142,11 +142,12 @@ model registro_ventas {
 }
 
 model user {
-  id         Int     @id @default(autoincrement())
-  username   String  @db.VarChar(8)
-  password   String  @db.VarChar(30)
+  id         Int      @id @default(autoincrement())
+  username   String   @db.VarChar(8)
+  password   String   @db.VarChar(30)
   empresa_id Int
-  empresa    empresa @relation(fields: [empresa_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_ibfk_1")
+  is_admin   Boolean? @default(false)
+  empresa    empresa  @relation(fields: [empresa_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_ibfk_1")
 
   @@index([empresa_id], map: "empresa_id")
 }

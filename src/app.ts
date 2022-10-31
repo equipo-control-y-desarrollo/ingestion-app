@@ -1,38 +1,18 @@
-import fastify from 'fastify'
-import dotenv from 'dotenv'
-import autoLoad from '@fastify/autoload'
-import cors from '@fastify/cors'
-import helmet from '@fastify/helmet'
-import path from 'path'
+import express from 'express';
+import dotenv from 'dotenv';
+import helmet from 'helmet';
+import cors from 'cors';
+
+dotenv.config();
+
+const app = express();
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cors());
+app.use(helmet());
 
 
-dotenv.config()
-
-const server = fastify({ logger: true })
-
-server.register(helmet)
-
-server.register(cors)
-
-server.register(autoLoad, {
-    dir: path.resolve(__dirname, '../src/plugins')
+app.listen(process.env.PORT, () => {
+    console.log(`Server is running on port ${process.env.PORT}`);
 });
-
-server.register(autoLoad, {
-    dir: path.resolve(__dirname, '../src/routes')
-});
-
-//Auth
-server.register(require('@fastify/jwt'), {
-  secret: +process.env.JWT_SECRET
-})
-
-const port = +process.env.PORT || 3000
-
-server.listen({ port: port }, (err, address) => {
-    if (err) {
-      console.error(err)
-      process.exit(1)
-    }
-    console.log(`Server listening at ${address}`)
-  })
