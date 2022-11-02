@@ -10,9 +10,14 @@ datasource db {
 model cartera {
   id                Int      @id @default(autoincrement())
   valor             Int
+  valor_abonado     Int?     @default(0)
+  valor_total       Int?
+  fecha_factura     DateTime @db.Date
   fecha_vencimiento DateTime @db.Date
   estado            Boolean? @default(false)
-  facturas_venta    String   @db.VarChar(20)
+  nro_factura       String   @db.VarChar(20)
+  proyecto          String?  @db.VarChar(20)
+  dias_vencido      Int?
   empresa_id        Int
   empresa           empresa  @relation(fields: [empresa_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "cartera_ibfk_1")
 

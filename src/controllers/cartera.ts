@@ -51,7 +51,16 @@ export const get_carteras_by_empresa = async (req: Request, res: Response, next:
 
 export const create_cartera = async (req: Request, res: Response, next: NextFunction) => {
     try{
-        const {empresa_id, fecha_vencimiento, valor, estado, facturas_venta} = req.body;
+        const {
+            valor,
+            valor_abonado,
+            fecha_factura,
+            fecha_vencimiento,
+            estado,
+            nro_factura,
+            proyecto,
+            empresa_id
+        } = req.body;
 
         const empresa = await prisma.empresa.findUnique({
             where: { id: +empresa_id },
@@ -64,10 +73,13 @@ export const create_cartera = async (req: Request, res: Response, next: NextFunc
         const cartera = await prisma.cartera.create({
             data: {
                 empresa_id: empresa_id,
-                fecha_vencimiento: new Date(fecha_vencimiento),
                 valor: valor,
+                valor_abonado: valor_abonado || undefined,
+                fecha_factura: new Date(fecha_factura),
+                fecha_vencimiento: new Date(fecha_vencimiento),
                 estado: estado || undefined,
-                facturas_venta: facturas_venta,
+                nro_factura: nro_factura,
+                proyecto: proyecto
             },
         });
         res.status(200).json(cartera);
@@ -79,15 +91,27 @@ export const create_cartera = async (req: Request, res: Response, next: NextFunc
 export const update_cartera = async (req: Request, res: Response, next: NextFunction) => {
     try{
         const {id} = req.params;
-        const {empresa_id, fecha_vencimiento, valor, estado, facturas_venta} = req.body;
+        const {
+            valor,
+            valor_abonado,
+            fecha_factura,
+            fecha_vencimiento,
+            estado,
+            nro_factura,
+            proyecto,
+            empresa_id
+        } = req.body;
         const cartera = await prisma.cartera.update({
             where: {id: +id},
             data: {
                 empresa_id: empresa_id || undefined,
-                fecha_vencimiento: new Date(fecha_vencimiento) || undefined,
                 valor: valor || undefined,
+                valor_abonado: valor_abonado || undefined,
+                fecha_factura: new Date(fecha_factura) || undefined,
+                fecha_vencimiento: new Date(fecha_vencimiento) || undefined,
                 estado: estado || undefined,
-                facturas_venta: facturas_venta || undefined,
+                nro_factura: nro_factura || undefined,
+                proyecto: proyecto || undefined
             },
         });
         res.status(200).json(cartera);
