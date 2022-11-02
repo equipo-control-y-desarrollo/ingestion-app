@@ -12,9 +12,9 @@ model cartera {
   valor             Int
   fecha_vencimiento DateTime @db.Date
   estado            Boolean? @default(false)
-  facturas_venta    Int
-  empresa_id        Int?
-  empresa           empresa? @relation(fields: [empresa_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "cartera_ibfk_1")
+  facturas_venta    String   @db.VarChar(20)
+  empresa_id        Int
+  empresa           empresa  @relation(fields: [empresa_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "cartera_ibfk_1")
 
   @@index([empresa_id], map: "empresa_id")
 }
@@ -77,9 +77,9 @@ model cuenta_pendiente {
   nfactura       String?  @db.VarChar(20)
   fecha_recibido DateTime @db.Date
   estado         String?  @default("CXP") @db.VarChar(5)
-  inmediato      Int?
-  dias_30        Int?
-  dias_60        Int?
+  inmediato      Int?     @default(0)
+  dias_30        Int?     @default(0)
+  dias_60        Int?     @default(0)
   total          Int?
   fecha_vencida  DateTime @db.Date
   empresa_id     Int
@@ -98,7 +98,6 @@ model empresa {
   flujo_caja_empresaToflujo_caja_empresa_id   flujo_caja[]       @relation("empresaToflujo_caja_empresa_id")
   flujo_caja_empresaToflujo_caja_categoria_id flujo_caja[]       @relation("empresaToflujo_caja_categoria_id")
   registro_ventas                             registro_ventas[]
-  user                                        user[]
 }
 
 model flujo_caja {
@@ -122,9 +121,9 @@ model registro_movimiento {
   pago           Float?   @default(0) @db.Float
   pago_impuesto  Float?   @default(0) @db.Float
   gasto_bancario Float?   @default(0) @db.Float
-  cuenta_id      Int?
+  cuenta_id      Int
   saldo          Float?   @db.Float
-  cuenta         cuenta?  @relation(fields: [cuenta_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "registro_movimiento_ibfk_1")
+  cuenta         cuenta   @relation(fields: [cuenta_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "registro_movimiento_ibfk_1")
 
   @@index([cuenta_id], map: "cuenta_id")
 }
@@ -137,17 +136,6 @@ model registro_ventas {
   producto    String   @db.VarChar(20)
   valor_total Int
   empresa     empresa  @relation(fields: [empresa_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "registro_ventas_ibfk_1")
-
-  @@index([empresa_id], map: "empresa_id")
-}
-
-model user {
-  id         Int      @id @default(autoincrement())
-  username   String   @db.VarChar(8)
-  password   String   @db.VarChar(30)
-  empresa_id Int
-  is_admin   Boolean? @default(false)
-  empresa    empresa  @relation(fields: [empresa_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_ibfk_1")
 
   @@index([empresa_id], map: "empresa_id")
 }
