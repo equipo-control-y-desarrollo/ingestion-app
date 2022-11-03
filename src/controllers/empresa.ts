@@ -44,7 +44,7 @@ export const createEmpresa = async (req: Request, res: Response, next: NextFunct
 export const updateEmpresa = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id } = req.params;
-        const { nombre, direccion, telefono } = req.body;
+        const { nombre } = req.body;
         const empresa = await prisma.empresa.update({
             where: { id: Number(id) },
             data: {

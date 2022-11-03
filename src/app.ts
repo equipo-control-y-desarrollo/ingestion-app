@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser';
 import empresaRouter from './routes/empresa';
 import carteraRouter from './routes/cartera';
 import cuentaPendienteRouter from './routes/cuenta_pendiente';
+import cuentasRouter from './routes/cuentas';
 import { handleError } from './utils/errors';
 
 dotenv.config();
@@ -22,6 +23,7 @@ app.use(cookieParser());
 app.use('/empresa',empresaRouter);
 app.use('/cartera',carteraRouter);
 app.use('/cuenta_pendiente',cuentaPendienteRouter);
+app.use('/cuentas',cuentasRouter);
 
 // Error handler
 app.use(handleError);

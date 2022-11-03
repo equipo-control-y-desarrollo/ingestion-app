@@ -136,7 +136,7 @@ export const update_cuenta_pendiente = async ( req: Request, res: Response, next
                 empresa_id: empresa_id || undefined
             },
         });
-        console.log('0' || undefined)
+        console.log(undefined || 0)
         res.json( cuenta_pendiente );   
     }catch(error){
         next(error);
