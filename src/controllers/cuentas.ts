@@ -1,1 +1,1 @@
-//Cuentas bancarias y cuentas pendientes
+//Cuentas bancarias

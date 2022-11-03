@@ -65,7 +65,6 @@ export const create_cartera = async (req: Request, res: Response, next: NextFunc
         const empresa = await prisma.empresa.findUnique({
             where: { id: +empresa_id },
         })
-        console.log(empresa)
         if(!empresa) {
             return next(createError('Empresa not found', 404));
         }
@@ -101,6 +100,15 @@ export const update_cartera = async (req: Request, res: Response, next: NextFunc
             proyecto,
             empresa_id
         } = req.body;
+        
+        if(empresa_id){
+            const empresa = await prisma.empresa.findUnique({
+                where: { id: +empresa_id},
+            })
+            if(!empresa) {
+                return next(createError('Empresa not found', 404));
+            }
+        }
         const cartera = await prisma.cartera.update({
             where: {id: +id},
             data: {
