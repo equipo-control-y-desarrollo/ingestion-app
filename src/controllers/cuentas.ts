@@ -6,6 +6,8 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
+
+//Cuentas bancarias
 export const get_cuentas = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const cuentas = await prisma.cuenta.findMany();
@@ -123,3 +125,5 @@ export const delete_cuenta = async (req: Request, res: Response, next: NextFunct
         next(error);
     }
 };
+
+//Registro de movimiento
