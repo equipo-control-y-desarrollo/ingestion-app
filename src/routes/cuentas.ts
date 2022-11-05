@@ -7,7 +7,6 @@ import {
     get_cuentas_by_empresa,
     update_cuenta,
     delete_cuenta,
-    get_movimientos,
     get_movimientos_by_cuenta,
     create_movimiento,
     get_movimiento,
@@ -26,8 +25,7 @@ router.put('/:id', update_cuenta);
 router.delete('/:id', delete_cuenta);
 
 //Movimientos bancarios router
-router.get('/movimientos', get_movimientos);
-router.get('/movimientos/:cuenta_id', get_movimientos_by_cuenta);
+router.get('/movimientos/cuenta/:cuenta_id', get_movimientos_by_cuenta);
 router.get('/movimientos/:id', get_movimiento);
 router.post('/movimientos', create_movimiento);
 router.put('/movimientos/:id', update_movimiento);

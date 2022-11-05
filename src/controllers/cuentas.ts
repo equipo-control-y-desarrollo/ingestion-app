@@ -91,13 +91,14 @@ export const update_cuenta = async (req: Request, res: Response, next: NextFunct
             empresa_id,
         } = req.body;
 
-        const empresa = await prisma.empresa.findUnique({
-            where: { id: +empresa_id },
-        });
-        if (!empresa) {
-            return next(createError('Empresa not found', 404));
+        if(empresa_id){
+            const empresa = await prisma.empresa.findUnique({
+                where: { id: +empresa_id },
+            });
+            if (!empresa) {
+                return next(createError('Empresa not found', 404));
+            }
         }
-
         const cuenta_updated = await prisma.cuenta.update({
             where: { id: +id },
             data: {
@@ -120,10 +121,137 @@ export const delete_cuenta = async (req: Request, res: Response, next: NextFunct
         const cuenta = await prisma.cuenta.delete({
             where: { id: +id },
         });
-        res.status(204).json(cuenta);
+        res.status(200).json(cuenta);
     } catch (error) {
         next(error);
     }
 };
 
 //Registro de movimiento
+export const get_movimiento = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { id } = req.params;
+        const movimiento = await prisma.movimiento.findUnique({
+            where: { id: +id },
+        });
+        if (!movimiento) {
+            return next(createError('Movimiento not found', 404));
+        }
+        res.status(200).json(movimiento);
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const get_movimientos_by_cuenta = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { cuenta_id } = req.params;
+        const cuenta = await prisma.cuenta.findUnique({
+            where: { id: +cuenta_id },
+        });
+        if (!cuenta) {
+            return next(createError('Cuenta not found', 404));
+        }
+
+        const movimientos = await prisma.movimiento.findMany({
+            where: { cuenta_id: +cuenta_id },
+        });
+        res.status(200).json(movimientos);
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const create_movimiento = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const {
+            fecha,
+            saldo_inicial,
+            ingreso,
+            pago,
+            pago_impuesto,
+            gasto_bancario,
+            cuenta_id,
+        } = req.body;
+
+        const cuenta = await prisma.cuenta.findUnique({
+            where: { id: +cuenta_id },
+        });
+        if (!cuenta) {
+            return next(createError('Cuenta not found', 404));
+        }
+
+        const movimiento = await prisma.movimiento.create({
+            data: {
+                fecha: new Date(fecha),
+                saldo_inicial: saldo_inicial,
+                ingreso: ingreso || undefined,
+                pago: pago || undefined,
+                pago_impuesto: pago_impuesto || undefined,
+                gasto_bancario: gasto_bancario || undefined,
+                cuenta_id: cuenta_id,
+            },
+        });
+        res.status(201).json(movimiento);
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const update_movimiento = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { id } = req.params;
+        const {
+            fecha,
+            saldo_inicial,
+            ingreso,
+            pago,
+            pago_impuesto,
+            gasto_bancario,
+            cuenta_id,
+        } = req.body;
+
+        if(cuenta_id){
+            const cuenta = await prisma.cuenta.findUnique({
+                where: { id: +cuenta_id },
+            });
+            if (!cuenta) {
+                return next(createError('Cuenta not found', 404));
+            }
+        }
+
+        let new_fecha = undefined
+        if(fecha){
+            new_fecha = new Date(fecha);
+        }
+
+        const movimiento_updated = await prisma.movimiento.update({
+            where: { id: +id },
+            data: {
+                fecha: new_fecha || undefined,
+                saldo_inicial: saldo_inicial || undefined,
+                ingreso: ingreso || undefined,
+                pago: pago || undefined,
+                pago_impuesto: pago_impuesto || undefined,
+                gasto_bancario: gasto_bancario || undefined,
+                cuenta_id: cuenta_id || undefined,
+            },
+        });
+
+        res.status(200).json(movimiento_updated);
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const delete_movimiento = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { id } = req.params;
+        const movimiento = await prisma.movimiento.delete({
+            where: { id: +id },
+        });
+        res.status(200).json({movimiento});
+    } catch (error) {
+        next(error);
+    }
+};

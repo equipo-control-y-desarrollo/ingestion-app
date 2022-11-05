@@ -63,13 +63,13 @@ model cuadro_ventas {
 }
 
 model cuenta {
-  id                  Int                   @id @default(autoincrement())
-  banco               String                @db.VarChar(20)
-  empresa_id          Int
-  numero              String                @db.VarChar(20)
-  tipo                cuenta_tipo
-  empresa             empresa               @relation(fields: [empresa_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "cuenta_ibfk_1")
-  registro_movimiento registro_movimiento[]
+  id         Int          @id @default(autoincrement())
+  banco      String       @db.VarChar(20)
+  empresa_id Int
+  numero     String       @db.VarChar(20)
+  tipo       cuenta_tipo
+  empresa    empresa      @relation(fields: [empresa_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "cuenta_ibfk_1")
+  movimiento movimiento[]
 
   @@index([empresa_id], map: "empresa_id")
 }
@@ -118,21 +118,6 @@ model flujo_caja {
   @@index([empresa_id], map: "empresa_id")
 }
 
-model registro_movimiento {
-  id             Int      @id @default(autoincrement())
-  fecha          DateTime @default(dbgenerated("(curdate())")) @db.Date
-  saldo_inicial  Float    @db.Float
-  ingreso        Float?   @default(0) @db.Float
-  pago           Float?   @default(0) @db.Float
-  pago_impuesto  Float?   @default(0) @db.Float
-  gasto_bancario Float?   @default(0) @db.Float
-  cuenta_id      Int
-  saldo          Float?   @db.Float
-  cuenta         cuenta   @relation(fields: [cuenta_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "registro_movimiento_ibfk_1")
-
-  @@index([cuenta_id], map: "cuenta_id")
-}
-
 model registro_ventas {
   id          Int      @id @default(autoincrement())
   fecha       DateTime @db.Date
@@ -143,6 +128,21 @@ model registro_ventas {
   empresa     empresa  @relation(fields: [empresa_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "registro_ventas_ibfk_1")
 
   @@index([empresa_id], map: "empresa_id")
+}
+
+model movimiento {
+  id             Int      @id @default(autoincrement())
+  fecha          DateTime @default(dbgenerated("(curdate())")) @db.Date
+  saldo_inicial  Float    @db.Float
+  ingreso        Float?   @default(0) @db.Float
+  pago           Float?   @default(0) @db.Float
+  pago_impuesto  Float?   @default(0) @db.Float
+  gasto_bancario Float?   @default(0) @db.Float
+  cuenta_id      Int
+  saldo          Float?   @db.Float
+  cuenta         cuenta   @relation(fields: [cuenta_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "movimiento_ibfk_1")
+
+  @@index([cuenta_id], map: "cuenta_id")
 }
 
 enum cuenta_tipo {
