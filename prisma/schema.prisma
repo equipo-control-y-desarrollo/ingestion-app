@@ -94,27 +94,23 @@ model cuenta_pendiente {
 }
 
 model empresa {
-  id                                          Int                @id @default(autoincrement())
-  nombre                                      String             @unique(map: "nombre") @db.VarChar(30)
-  cartera                                     cartera[]
-  cuadro_ventas                               cuadro_ventas[]
-  cuenta                                      cuenta[]
-  cuenta_pendiente                            cuenta_pendiente[]
-  flujo_caja_empresaToflujo_caja_empresa_id   flujo_caja[]       @relation("empresaToflujo_caja_empresa_id")
-  flujo_caja_empresaToflujo_caja_categoria_id flujo_caja[]       @relation("empresaToflujo_caja_categoria_id")
-  registro_ventas                             registro_ventas[]
+  id                                        Int                @id @default(autoincrement())
+  nombre                                    String             @unique(map: "nombre") @db.VarChar(30)
+  cartera                                   cartera[]
+  cuadro_ventas                             cuadro_ventas[]
+  cuenta                                    cuenta[]
+  cuenta_pendiente                          cuenta_pendiente[]
+  flujo_caja_empresaToflujo_caja_empresa_id flujo_caja[]       @relation("empresaToflujo_caja_empresa_id")
+  registro_ventas                           registro_ventas[]
 }
 
 model flujo_caja {
-  id                                       Int         @id @default(autoincrement())
-  fecha                                    DateTime    @db.Date
-  empresa_id                               Int
-  categoria_id                             Int
-  empresa_empresaToflujo_caja_empresa_id   empresa     @relation("empresaToflujo_caja_empresa_id", fields: [empresa_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "flujo_caja_ibfk_1")
-  empresa_empresaToflujo_caja_categoria_id empresa     @relation("empresaToflujo_caja_categoria_id", fields: [categoria_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "flujo_caja_ibfk_2")
-  categoria                                categoria[]
+  id                                     Int         @id @default(autoincrement())
+  fecha                                  DateTime    @db.Date
+  empresa_id                             Int
+  empresa_empresaToflujo_caja_empresa_id empresa     @relation("empresaToflujo_caja_empresa_id", fields: [empresa_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "flujo_caja_ibfk_1")
+  categoria                              categoria[]
 
-  @@index([categoria_id], map: "categoria_id")
   @@index([empresa_id], map: "empresa_id")
 }
 
