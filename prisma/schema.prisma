@@ -27,6 +27,7 @@ model cartera {
 model categoria {
   id            Int        @id @default(autoincrement())
   flujo_caja_id Int
+  descripcion   String     @db.VarChar(20)
   efectivo      Int?       @default(0)
   datafono      Int?       @default(0)
   transferencia Int?       @default(0)
@@ -108,6 +109,7 @@ model flujo_caja {
   id                                     Int         @id @default(autoincrement())
   fecha                                  DateTime    @db.Date
   empresa_id                             Int
+  saldo_anterior                         Float?      @default(0) @db.Float
   empresa_empresaToflujo_caja_empresa_id empresa     @relation("empresaToflujo_caja_empresa_id", fields: [empresa_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "flujo_caja_ibfk_1")
   categoria                              categoria[]
 
