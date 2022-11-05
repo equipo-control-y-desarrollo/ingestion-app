@@ -9,6 +9,7 @@ import carteraRouter from './routes/cartera';
 import cuentaPendienteRouter from './routes/cuenta_pendiente';
 import cuentasRouter from './routes/cuentas';
 import flujoCajaRouter from './routes/flujo_caja';
+import ventasRouter from './routes/ventas';
 
 import { handleError } from './utils/errors';
 
@@ -28,6 +29,7 @@ app.use('/cartera',carteraRouter);
 app.use('/cuenta_pendiente',cuentaPendienteRouter);
 app.use('/cuentas',cuentasRouter);
 app.use('/flujocaja',flujoCajaRouter);
+app.use('/ventas',ventasRouter);
 
 // Error handler
 app.use(handleError);
