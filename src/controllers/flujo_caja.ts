@@ -48,6 +48,7 @@ export const create_flujo_caja = async ( req: Request, res: Response, next: Next
             saldo_anterior
         } = req.body;
 
+        console.log(empresa_id)
         const empresa = await prisma.empresa.findUnique({
             where: { id: +empresa_id },
         });
@@ -58,9 +59,9 @@ export const create_flujo_caja = async ( req: Request, res: Response, next: Next
 
         const flujo_caja = await prisma.flujo_caja.create({
             data: {
-                fecha: fecha,
+                fecha: new Date(fecha),
                 empresa_id: empresa_id,
-                saldo_anterior: saldo_anterior
+                saldo_anterior: saldo_anterior || undefined
             },
         });
         res.status( 200 ).json( flujo_caja );
@@ -136,20 +137,20 @@ export const get_categoria = async ( req: Request, res: Response, next: NextFunc
     }
 };
 
-export const get_categoria_by_empresa = async ( req: Request, res: Response, next: NextFunction ) => {
+export const get_categorias_by_flujo_caja = async ( req: Request, res: Response, next: NextFunction ) => {
     try {
-        const { empresa_id } = req.params;
-        const empresa = await prisma.empresa.findUnique({
-            where: { id: +empresa_id },
+        const { flujo_caja_id } = req.params;
+        const flujo_caja = await prisma.flujo_caja.findUnique({
+            where: { id: +flujo_caja_id },
         });
-        if ( !empresa ) {
-            return next( createError( 'Empresa not found', 404 ) );
+        if ( !flujo_caja ) {
+            return next( createError( 'Flujo caja not found', 404 ) );
         }
 
-        const categoria = await prisma.categoria.findMany({
-            where: { empresa_id: +empresa_id },
+        const categorias = await prisma.categoria.findMany({
+            where: { flujo_caja_id: +flujo_caja_id },
         });
-        res.status( 200 ).json( categoria );
+        res.status( 200 ).json( categorias );
     }catch(error){
         next(error)
     }

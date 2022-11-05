@@ -3,10 +3,13 @@ import dotenv from 'dotenv';
 import helmet from 'helmet';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+//Routers
 import empresaRouter from './routes/empresa';
 import carteraRouter from './routes/cartera';
 import cuentaPendienteRouter from './routes/cuenta_pendiente';
 import cuentasRouter from './routes/cuentas';
+import flujoCajaRouter from './routes/flujo_caja';
+
 import { handleError } from './utils/errors';
 
 dotenv.config();
@@ -24,6 +27,7 @@ app.use('/empresa',empresaRouter);
 app.use('/cartera',carteraRouter);
 app.use('/cuenta_pendiente',cuentaPendienteRouter);
 app.use('/cuentas',cuentasRouter);
+app.use('/flujocaja',flujoCajaRouter);
 
 // Error handler
 app.use(handleError);

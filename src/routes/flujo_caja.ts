@@ -23,7 +23,7 @@ router.post('/', create_flujo_caja);
 router.put('/:id', update_flujo_caja);
 router.delete('/:id', delete_flujo_caja);
 
-router.get('/categorias/:flujo_caja_id', get_categorias_by_flujo_caja);
+router.get('/categorias/flujo/:flujo_caja_id', get_categorias_by_flujo_caja);
 router.get('/categorias/:id', get_categoria);
 router.post('/categorias', create_categoria);
 router.put('/categorias/:id', update_categoria);
