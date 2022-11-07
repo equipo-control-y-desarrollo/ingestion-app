@@ -212,7 +212,7 @@ export const create_cuadro_venta = async (req: Request, res: Response, next: Nex
         const cuadro_venta = await prisma.cuadro_ventas.create({
             data: {
                 empresa_id: empresa_id,
-                ventas_mañana: ventas_mañana,
+                ventas_ma_ana: ventas_mañana,
                 ventas_tarde: ventas_tarde,
                 ventas_totales: ventas_totales,
                 efectivo: efectivo,
@@ -272,7 +272,7 @@ export const update_cuadro_venta = async (req: Request, res: Response, next: Nex
             where: { id: +id },
             data: {
                 empresa_id: empresa_id || undefined,
-                ventas_mañana: ventas_mañana || undefined,
+                ventas_ma_ana: ventas_mañana || undefined,
                 ventas_tarde: ventas_tarde || undefined,
                 ventas_totales: ventas_totales || undefined,
                 efectivo: efectivo || undefined,

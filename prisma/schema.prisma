@@ -103,6 +103,15 @@ model empresa {
   cuenta_pendiente                          cuenta_pendiente[]
   flujo_caja_empresaToflujo_caja_empresa_id flujo_caja[]       @relation("empresaToflujo_caja_empresa_id")
   registro_ventas                           registro_ventas[]
+  usuarios                                  usuario[]
+}
+
+model usuario {
+  id Int @id @default(autoincrement())
+  username String @unique(map: "username") @db.VarChar(20)
+  password String @db.VarChar(60)
+  isAdmin Boolean @default(false)
+  empresas empresa[]
 }
 
 model flujo_caja {

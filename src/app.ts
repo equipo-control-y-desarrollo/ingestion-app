@@ -10,6 +10,7 @@ import cuentaPendienteRouter from './routes/cuenta_pendiente';
 import cuentasRouter from './routes/cuentas';
 import flujoCajaRouter from './routes/flujo_caja';
 import ventasRouter from './routes/ventas';
+import authRouter from './routes/auth';
 
 import { handleError } from './utils/errors';
 
@@ -30,6 +31,7 @@ app.use('/cuenta_pendiente',cuentaPendienteRouter);
 app.use('/cuentas',cuentasRouter);
 app.use('/flujocaja',flujoCajaRouter);
 app.use('/ventas',ventasRouter);
+app.use('/auth',authRouter);
 
 // Error handler
 app.use(handleError);
