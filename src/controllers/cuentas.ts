@@ -26,7 +26,12 @@ export const get_cuenta = async (req: Request, res: Response, next: NextFunction
         if (!cuenta) {
             return next(createError('Cuenta not found', 404));
         }
-        res.status(200).json(cuenta);
+
+        if(req.user.isAdmin || req.user.empresas.includes(+cuenta.empresa_id)){
+            res.status(200).json(cuenta);
+        }else{
+            next(createError('Unauthorized', 401));
+        }
     } catch (error) {
         next(error);
     }
@@ -66,6 +71,9 @@ export const create_cuenta = async (req: Request, res: Response, next: NextFunct
         if (!empresa) {
             return next(createError('Empresa not found', 404));
         }
+        if(!req.user.isAdmin && !req.user.empresas.includes(+empresa_id)){
+            return next(createError('Unauthorized', 401));
+        }
 
         const cuenta = await prisma.cuenta.create({
             data: {
@@ -91,12 +99,23 @@ export const update_cuenta = async (req: Request, res: Response, next: NextFunct
             empresa_id,
         } = req.body;
 
+        const cuenta = await prisma.cuenta.findUnique({
+            where: { id: +id },
+        });
+        if (!req.user.isAdmin && !req.user.empresas.includes(+cuenta.empresa_id)) {
+            return next(createError('Unauthorized', 401));
+        }
+
         if(empresa_id){
             const empresa = await prisma.empresa.findUnique({
                 where: { id: +empresa_id },
             });
             if (!empresa) {
                 return next(createError('Empresa not found', 404));
+            }
+
+            if(!req.user.isAdmin && !req.user.empresas.includes(+empresa_id)){
+                return next(createError('Unauthorized', 401));
             }
         }
         const cuenta_updated = await prisma.cuenta.update({
@@ -118,10 +137,18 @@ export const update_cuenta = async (req: Request, res: Response, next: NextFunct
 export const delete_cuenta = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id } = req.params;
-        const cuenta = await prisma.cuenta.delete({
+
+        const cuenta = await prisma.cuenta.findUnique({
             where: { id: +id },
         });
-        res.status(200).json(cuenta);
+        if (!req.user.isAdmin && !req.user.empresas.includes(+cuenta.empresa_id)) {
+            return next(createError('Unauthorized', 401));
+        }
+
+        const cuenta_deleted = await prisma.cuenta.delete({
+            where: { id: +id },
+        });
+        res.status(200).json(cuenta_deleted);
     } catch (error) {
         next(error);
     }
@@ -137,6 +164,15 @@ export const get_movimiento = async (req: Request, res: Response, next: NextFunc
         if (!movimiento) {
             return next(createError('Movimiento not found', 404));
         }
+
+        //validate authorization
+        const cuenta = await prisma.cuenta.findUnique({
+            where: { id: +movimiento.cuenta_id },
+        });
+        if (!req.user.isAdmin && !req.user.empresas.includes(+cuenta.empresa_id)) {
+            return next(createError('Unauthorized', 401));
+        }
+
         res.status(200).json(movimiento);
     } catch (error) {
         next(error);
@@ -151,6 +187,11 @@ export const get_movimientos_by_cuenta = async (req: Request, res: Response, nex
         });
         if (!cuenta) {
             return next(createError('Cuenta not found', 404));
+        }
+
+        //validate authorization
+        if (!req.user.isAdmin && !req.user.empresas.includes(+cuenta.empresa_id)) {
+            return next(createError('Unauthorized', 401));
         }
 
         const movimientos = await prisma.movimiento.findMany({
@@ -179,6 +220,11 @@ export const create_movimiento = async (req: Request, res: Response, next: NextF
         });
         if (!cuenta) {
             return next(createError('Cuenta not found', 404));
+        }
+
+        //validate authorization
+        if (!req.user.isAdmin && !req.user.empresas.includes(+cuenta.empresa_id)) {
+            return next(createError('Unauthorized', 401));
         }
 
         const movimiento = await prisma.movimiento.create({
@@ -211,12 +257,27 @@ export const update_movimiento = async (req: Request, res: Response, next: NextF
             cuenta_id,
         } = req.body;
 
+        //validate authorization
+        const movimiento = await prisma.movimiento.findUnique({
+            where: { id: +id },
+        });
+        const cuenta = await prisma.cuenta.findUnique({
+            where: { id: +movimiento.cuenta_id },
+        });
+        if (!req.user.isAdmin && !req.user.empresas.includes(+cuenta.empresa_id)) {
+            return next(createError('Unauthorized', 401));
+        }
+
         if(cuenta_id){
             const cuenta = await prisma.cuenta.findUnique({
                 where: { id: +cuenta_id },
             });
             if (!cuenta) {
                 return next(createError('Cuenta not found', 404));
+            }
+            //validate authorization
+            if (!req.user.isAdmin && !req.user.empresas.includes(+cuenta.empresa_id)) {
+                return next(createError('Unauthorized', 401));
             }
         }
 
@@ -247,10 +308,22 @@ export const update_movimiento = async (req: Request, res: Response, next: NextF
 export const delete_movimiento = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id } = req.params;
-        const movimiento = await prisma.movimiento.delete({
+
+        //validate authorization
+        const movimiento = await prisma.movimiento.findUnique({
             where: { id: +id },
         });
-        res.status(200).json({movimiento});
+        const cuenta = await prisma.cuenta.findUnique({
+            where: { id: +movimiento.cuenta_id },
+        });
+        if (!req.user.isAdmin && !req.user.empresas.includes(+cuenta.empresa_id)) {
+            return next(createError('Unauthorized', 401));
+        }
+
+        const movimiento_deleted = await prisma.movimiento.delete({
+            where: { id: +id },
+        });
+        res.status(200).json({movimiento_deleted});
     } catch (error) {
         next(error);
     }
