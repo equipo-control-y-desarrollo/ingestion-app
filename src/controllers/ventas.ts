@@ -348,15 +348,20 @@ export const update_cuadro_venta = async (req: Request, res: Response, next: Nex
 export const delete_cuadro_venta = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id } = req.params;
-        const cuadro_venta = await prisma.cuadro_ventas.delete({
+
+        //Validates if cuadro ventas exists and if the user is authorized
+        const cuadro_venta = await prisma.cuadro_ventas.findUnique({
             where: { id: +id },
         });
-        
         if(!req.user.isAdmin && !req.user.empresas.includes(+cuadro_venta.empresa_id)){
             return next(createError('Unauthorized', 401));
         }
-        
-        res.status(200).json(cuadro_venta);
+
+        const cuadro_venta_deleted = await prisma.cuadro_ventas.delete({
+            where: { id: +id },
+        });
+
+        res.status(200).json(cuadro_venta_deleted);
     } catch (error) {
         next(error);
     }

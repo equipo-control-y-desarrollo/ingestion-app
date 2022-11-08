@@ -23,7 +23,12 @@ export const get_cuenta_pendiente = async ( req: Request, res: Response, next: N
         if ( !cuenta_pendiente ) {
             return next( createError( 'Cuenta pendiente not found', 404 ) );
         }
-        res.json( cuenta_pendiente );
+
+        if ( req.user.isAdmin || req.user.empresas.includes( +cuenta_pendiente.empresa_id ) ) {
+            return res.status( 200 ).json( cuenta_pendiente );
+        } else {
+            next( createError( 'Unauthorized', 401 ) );
+        }
     } catch ( error ) {
         next( error );
     }
@@ -72,6 +77,10 @@ export const create_cuenta_pendiente = async ( req: Request, res: Response, next
             return next( createError( 'Empresa not found', 404 ) );
         }
 
+        if(!req.user.isAdmin && !req.user.empresas.includes(+empresa_id)){
+            return next(createError('Unauthorized', 401));
+        }
+
         const cuenta_pendiente = await prisma.cuenta_pendiente.create({
             data: {
                 proyecto: proyecto,
@@ -109,6 +118,15 @@ export const update_cuenta_pendiente = async ( req: Request, res: Response, next
             fecha_vencida,
             empresa_id
         } = req.body;
+        
+        //Validates if cuenta_pendiente is in usuario's empresas
+        const cuenta_pendiente = await prisma.cuenta_pendiente.findUnique({
+            where: { id: +id },
+        });
+
+        if ( !req.user.isAdmin && !req.user.empresas.includes( +cuenta_pendiente.empresa_id ) ) {
+            return next( createError( 'Unauthorized', 401 ) );
+        }
 
         if(empresa_id){
             const empresa = await prisma.empresa.findUnique( {
@@ -118,9 +136,14 @@ export const update_cuenta_pendiente = async ( req: Request, res: Response, next
             if ( !empresa ) {
                 return next( createError( 'Empresa not found', 404 ) );
             }
-        }
 
-        const cuenta_pendiente = await prisma.cuenta_pendiente.update( {
+            //Validates if empresa is in usuario's empresas
+            if ( !req.user.isAdmin && !req.user.empresas.includes( +empresa_id ) ) {
+                return next( createError( 'Unauthorized', 401 ) );
+            }
+        }
+        
+        const cuenta_pendiente_updated = await prisma.cuenta_pendiente.update( {
             where: { id: +id },
             data: {
                 proyecto: proyecto || undefined,
@@ -137,7 +160,7 @@ export const update_cuenta_pendiente = async ( req: Request, res: Response, next
             },
         });
         console.log(undefined || 0)
-        res.json( cuenta_pendiente );   
+        res.json( cuenta_pendiente_updated );   
     }catch(error){
         next(error);
     }
@@ -146,10 +169,19 @@ export const update_cuenta_pendiente = async ( req: Request, res: Response, next
 export const delete_cuenta_pendiente = async ( req: Request, res: Response, next: NextFunction ) => {
     try {
         const { id } = req.params;
-        const cuenta_pendiente = await prisma.cuenta_pendiente.delete( {
+        
+        const cuenta_pendiente = await prisma.cuenta_pendiente.findUnique({
+            where: { id: +id },
+        });
+
+        if(!req.user.isAdmin && !req.user.empresas.includes(+cuenta_pendiente.empresa_id)){
+            return next(createError('Unauthorized', 401));
+        }
+
+        const cuenta_pendiente_deleted = await prisma.cuenta_pendiente.delete( {
             where: { id: +id },
         } );
-        res.json( cuenta_pendiente );
+        res.json( cuenta_pendiente_deleted );
     } catch ( error ) {
         next( error );
     }
