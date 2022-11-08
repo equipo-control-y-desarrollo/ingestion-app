@@ -1,5 +1,6 @@
 import { compare, genSaltSync, hash } from 'bcrypt'
 import * as jwt from 'jsonwebtoken'
+import { Request, Response, NextFunction } from 'express'
 
 export const hashPassword = async (password: string) => {
     const salt = genSaltSync(10)
@@ -11,11 +12,28 @@ export const comparePassword = async (password: string, hash: string) => {
 }
 
 export const generateToken = (payload: any) => {
-    console.log(process.env.JWT_SECRET)
     return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' })
 }
 
-export const verifyToken = (token: string | undefined) => {
-    return jwt.verify(token, process.env.JWT_SECRET)
+export const verifyToken = (req: Response, res: Response, next: NextFunction) => {
+    try {
+        jwt.verify(req.cookies.access_token, process.env.JWT_SECRET, (err, decoded) => {
+            if (err) {
+                return res.status(401).json({ message: "Unauthorized" });
+            }
+            req['user'] = decoded;
+        });
+    } catch (error) {
+        next(error);
+    }
 }
+
+export const verifyAdmin = (req: Request, res: Response, next: NextFunction) => {
+    verifyToken(req, res, next);
+    if (req['user'].isAdmin) {
+        next();
+    } else {
+        return res.status(403).json({ message: "Forbidden" });
+    }
+};
 

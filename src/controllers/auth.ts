@@ -50,7 +50,6 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
             username: usuario.username,
             isAdmin: usuario.isAdmin,
         });
-        console.log('token', token);
         res.cookie('token', token, { httpOnly: true }).status(200).json(usuario);
     } catch (error) {
         next(error);
