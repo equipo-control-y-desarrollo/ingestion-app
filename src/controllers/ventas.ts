@@ -8,6 +8,7 @@ const prisma = new PrismaClient();
 export const get_ventas = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const ventas = await prisma.registro_ventas.findMany();
+        //Validates user is admin or belongs to the empresa
         res.status(200).json(ventas);
     } catch (error) {
         next(error);
@@ -23,7 +24,12 @@ export const get_venta = async (req: Request, res: Response, next: NextFunction)
         if (!venta) {
             return next(createError('Venta not found', 404));
         }
-        res.status(200).json(venta);
+        //Validates user is admin or belongs to the empresa
+        if(req.user.isAdmin || req.user.empresas.includes(+venta.empresa_id)){
+            res.status(200).json(venta);
+        }else{
+            next(createError('Unauthorized', 401));
+        }
     } catch (error) {
         next(error);
     }
@@ -65,6 +71,9 @@ export const create_venta = async (req: Request, res: Response, next: NextFuncti
         if (!empresa) {
             return next(createError('Empresa not found', 404));
         }
+        if(!req.user.isAdmin && !req.user.empresas.includes(+empresa_id)){
+            return next(createError('Unauthorized', 401));
+        }
 
         const venta = await prisma.registro_ventas.create({
             data: {
@@ -92,11 +101,25 @@ export const update_venta = async (req: Request, res: Response, next: NextFuncti
             valor_total
         } = req.body;
 
+        //Checks if venta is in the empresas of the user
         const venta = await prisma.registro_ventas.findUnique({
             where: { id: +id },
-        });
-        if (!venta) {
-            return next(createError('Venta not found', 404));
+        })
+        if(!req.user.isAdmin && !req.user.empresas.includes(+venta.empresa_id)){
+            return next(createError('Unauthorized', 401));
+        }
+
+        if(empresa_id){
+            const empresa = await prisma.empresa.findUnique({
+                where: { id: +empresa_id },
+            });
+            if (!empresa) {
+                return next(createError('Empresa not found', 404));
+            }
+            //Validates if new empresa is owned by the user
+            if(!req.user.isAdmin && !req.user.empresas.includes(+empresa_id)){
+                return next(createError('Unauthorized', 401));
+            }
         }
 
         const new_fecha = fecha ? new Date(fecha) : undefined;
@@ -126,6 +149,12 @@ export const delete_venta = async (req: Request, res: Response, next: NextFuncti
         if (!venta) {
             return next(createError('Venta not found', 404));
         }
+
+        //Checks if venta is in the empresas of the user
+        if(!req.user.isAdmin && !req.user.empresas.includes(+venta.empresa_id)){
+            return next(createError('Unauthorized', 401));
+        }
+        
         await prisma.registro_ventas.delete({
             where: { id: +id },
         });
