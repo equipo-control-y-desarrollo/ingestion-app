@@ -14,11 +14,13 @@ import {
     delete_movimiento,
 } from "../controllers/cuentas";
 
+import { verifyAdmin } from '../utils/jwt' 
+
 const router = Router();
 
 //Cuentas bancarias router
 router.get('/empresa/:empresa_id', get_cuentas_by_empresa);
-router.get('/', get_cuentas);
+router.get('/', verifyAdmin, get_cuentas);
 router.get('/:id', get_cuenta);
 router.post('/', create_cuenta);
 router.put('/:id', update_cuenta);

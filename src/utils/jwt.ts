@@ -17,7 +17,7 @@ export const generateToken = (payload: any) => {
 
 export const verifyToken = (req: Response, res: Response, next: NextFunction) => {
     try {
-        jwt.verify(req.cookies.access_token, process.env.JWT_SECRET, (err, decoded) => {
+        jwt.verify(req.cookies.token, process.env.JWT_SECRET, (err, decoded) => {
             if (err) {
                 return res.status(401).json({ message: "Unauthorized" });
             }

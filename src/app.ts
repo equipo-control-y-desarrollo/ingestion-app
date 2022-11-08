@@ -11,6 +11,8 @@ import cuentasRouter from './routes/cuentas';
 import flujoCajaRouter from './routes/flujo_caja';
 import ventasRouter from './routes/ventas';
 import authRouter from './routes/auth';
+import { verifyAdmin } from './utils/jwt' 
+
 
 import { handleError } from './utils/errors';
 
@@ -25,7 +27,7 @@ app.use(cors());
 app.use(helmet());
 app.use(cookieParser());
 
-app.use('/empresa',empresaRouter);
+app.use('/empresa', verifyAdmin,empresaRouter);
 app.use('/cartera',carteraRouter);
 app.use('/cuenta_pendiente',cuentaPendienteRouter);
 app.use('/cuentas',cuentasRouter);

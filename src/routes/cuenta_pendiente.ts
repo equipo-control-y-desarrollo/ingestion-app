@@ -10,10 +10,12 @@ import {
     delete_cuenta_pendiente,
 } from "../controllers/cuenta_pendiente";
 
+import { verifyAdmin } from '../utils/jwt' 
+
 const router = Router();
 
 router.get('/empresa/:empresa_id', get_cuentas_pendientes_by_empresa);
-router.get('/', get_cuentas_pendientes);
+router.get('/', verifyAdmin,get_cuentas_pendientes);
 router.get('/:id', get_cuenta_pendiente);
 router.post('/', create_cuenta_pendiente);
 router.put('/:id', update_cuenta_pendiente);

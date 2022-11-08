@@ -15,6 +15,8 @@ import {
     delete_categoria,
 } from "../controllers/flujo_caja";
 
+import { verifyAdmin } from '../utils/jwt' 
+
 const router = Router();
 
 router.get('/empresa/:empresa_id', get_flujo_caja_by_empresa);
