@@ -17,11 +17,11 @@ import {
     delete_cuadro_venta,
 } from "../controllers/ventas";
 
-import { verifyAdmin } from '../utils/jwt' 
+import { verifyAdmin, verifyEmpresa } from '../utils/jwt' 
 
 const router = Router();
 
-router.get('/empresa/:empresa_id', get_ventas_by_empresa);
+router.get('/empresa/:empresa_id', verifyEmpresa, get_ventas_by_empresa);
 router.get('/', verifyAdmin, get_ventas);
 router.get('/:id', get_venta);
 router.post('/', create_venta);
@@ -29,7 +29,7 @@ router.put('/:id', update_venta);
 router.delete('/:id', delete_venta);
 
 
-router.get('/cuadros/empresa/:empresa_id', get_cuadros_ventas_by_empresa);
+router.get('/cuadros/empresa/:empresa_id', verifyEmpresa, get_cuadros_ventas_by_empresa);
 router.get('/cuadros/', verifyAdmin,get_cuadros_ventas);
 router.get('/cuadros/:id', get_cuadro_venta);
 router.post('/cuadros/', create_cuadro_venta);

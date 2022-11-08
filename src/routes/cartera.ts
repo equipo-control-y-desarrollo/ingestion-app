@@ -8,13 +8,13 @@ import {
     delete_cartera,
 } from "../controllers/cartera";
 
-import { verifyAdmin } from '../utils/jwt' 
+import { verifyAdmin, verifyEmpresa } from '../utils/jwt' 
 
 import { Router } from 'express';
 
 const router = Router();
 
-router.get('/empresa/:empresa_id', get_carteras_by_empresa);
+router.get('/empresa/:empresa_id', verifyEmpresa, get_carteras_by_empresa);
 router.get('/', verifyAdmin,get_carteras);
 router.get('/:id', get_cartera);
 router.post('/', create_cartera);

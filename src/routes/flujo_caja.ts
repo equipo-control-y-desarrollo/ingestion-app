@@ -15,11 +15,11 @@ import {
     delete_categoria,
 } from "../controllers/flujo_caja";
 
-import { verifyAdmin } from '../utils/jwt' 
+import { verifyAdmin, verifyEmpresa } from '../utils/jwt' 
 
 const router = Router();
 
-router.get('/empresa/:empresa_id', get_flujo_caja_by_empresa);
+router.get('/empresa/:empresa_id', verifyEmpresa, get_flujo_caja_by_empresa);
 router.get('/:id', get_flujo_caja);
 router.post('/', create_flujo_caja);
 router.put('/:id', update_flujo_caja);
