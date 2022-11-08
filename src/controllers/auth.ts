@@ -37,6 +37,9 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
         const { username, password } = req.body;
         const usuario = await prisma.usuario.findUnique({
             where: { username },
+            include: {
+                empresas: true,
+            },
         });
         if (!usuario) {
             return next(createError('Usuario not found', 404));
@@ -45,10 +48,12 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
         if (!isPasswordValid) {
             return next(createError('Invalid password', 401));
         }
+
         const token = generateToken({
             id: usuario.id,
             username: usuario.username,
             isAdmin: usuario.isAdmin,
+            empresas: usuario.empresas.map((empresa) => empresa.id),
         });
         res.cookie('token', token, { httpOnly: true }).status(200).json(usuario);
     } catch (error) {

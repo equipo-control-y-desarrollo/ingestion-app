@@ -15,7 +15,13 @@ export const get_cartera = async (req: Request, res: Response, next: NextFunctio
         if (!cartera) {
             return next(createError('Cartera not found', 404));
         }
-        res.status(200).json(cartera);
+
+        //Validates user is admin or belongs to the empresa
+        if(req.user.isAdmin || req.user.empresas.includes(+cartera.empresa_id)){ 
+            return res.status(200).json(cartera);
+        }else{
+            next(createError('Unauthorized', 401));
+        }
     } catch (error) {
         next(error);
     }
@@ -62,6 +68,11 @@ export const create_cartera = async (req: Request, res: Response, next: NextFunc
             empresa_id
         } = req.body;
 
+        //Validates user is admin or belongs to the empresa
+        if(!req.user.isAdmin && !req.user.empresas.includes(+empresa_id)){
+            next(createError('Unauthorized', 401));
+        }
+
         const empresa = await prisma.empresa.findUnique({
             where: { id: +empresa_id },
         })
@@ -102,6 +113,10 @@ export const update_cartera = async (req: Request, res: Response, next: NextFunc
         } = req.body;
         
         if(empresa_id){
+            //Validates user is admin or belongs to the empresa
+            if(!req.user.isAdmin && !req.user.empresas.includes(+empresa_id)){
+                next(createError('Unauthorized', 401));
+            }
             const empresa = await prisma.empresa.findUnique({
                 where: { id: +empresa_id},
             })
@@ -109,7 +124,17 @@ export const update_cartera = async (req: Request, res: Response, next: NextFunc
                 return next(createError('Empresa not found', 404));
             }
         }
-        const cartera = await prisma.cartera.update({
+
+        //Checks if user belongs to cartera's empresa
+        let cartera = await prisma.cartera.findUnique({
+            where: { id: +id },
+        });
+        if(!req.user.isAdmin && !req.user.empresas.includes(+cartera.empresa_id)){
+            next(createError('Unauthorized', 401));
+        }
+
+
+        const cartera_update = await prisma.cartera.update({
             where: {id: +id},
             data: {
                 empresa_id: empresa_id || undefined,
@@ -122,7 +147,7 @@ export const update_cartera = async (req: Request, res: Response, next: NextFunc
                 proyecto: proyecto || undefined
             },
         });
-        res.status(200).json(cartera);
+        res.status(200).json(cartera_update);
     }catch(error){
         next(error);
     }
@@ -131,10 +156,19 @@ export const update_cartera = async (req: Request, res: Response, next: NextFunc
 export const delete_cartera = async (req: Request, res: Response, next: NextFunction) => {
     try{
         const {id} = req.params;
-        const cartera = await prisma.cartera.delete({
+
+        //Checks if user belongs to cartera's empresa
+        let cartera = await prisma.cartera.findUnique({
+            where: { id: +id },
+        });
+        if(!req.user.isAdmin && !req.user.empresas.includes(+cartera.empresa_id)){
+            next(createError('Unauthorized', 401));
+        }
+
+        const cartera_delete = await prisma.cartera.delete({
             where: {id: +id},
         });
-        res.status(200).json(cartera);
+        res.status(200).json(cartera_delete);
     }catch(error){
         next(error);
     }

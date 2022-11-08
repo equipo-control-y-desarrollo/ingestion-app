@@ -37,9 +37,15 @@ export const verifyAdmin = (req: Request, res: Response, next: NextFunction) => 
     }
 };
 
+export const verifyUser = (req: Request, res: Response, next: NextFunction) => {
+    verifyToken(req, res, next);
+    next();
+};
+
+
 export const verifyEmpresa = (req: Request, res: Response, next: NextFunction) => {
     verifyToken(req, res, next);
-    if (req['user'].empresas.includes(req.params.empresa_id) || req['user'].isAdmin) {
+    if (req['user'].empresas.includes(+req.params.empresa_id) || req['user'].isAdmin) {
         next();
     } else {
         return res.status(403).json({ message: "Forbidden" });
