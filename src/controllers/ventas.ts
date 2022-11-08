@@ -154,7 +154,7 @@ export const delete_venta = async (req: Request, res: Response, next: NextFuncti
         if(!req.user.isAdmin && !req.user.empresas.includes(+venta.empresa_id)){
             return next(createError('Unauthorized', 401));
         }
-        
+
         await prisma.registro_ventas.delete({
             where: { id: +id },
         });
@@ -183,7 +183,12 @@ export const get_cuadro_venta = async (req: Request, res: Response, next: NextFu
         if (!cuadro_venta) {
             return next(createError('Cuadro venta not found', 404));
         }
-        res.status(200).json(cuadro_venta);
+
+        if(req.user.isAdmin || req.user.empresas.includes(+cuadro_venta.empresa_id)){
+            res.status(200).json(cuadro_venta);
+        }else{
+            next(createError('Unauthorized', 401));
+        }
     } catch (error) {
         next(error);
     }
@@ -237,6 +242,9 @@ export const create_cuadro_venta = async (req: Request, res: Response, next: Nex
         if (!empresa) {
             return next(createError('Empresa not found', 404));
         }
+        if(!req.user.isAdmin && !req.user.empresas.includes(+empresa_id)){
+            return next(createError('Unauthorized', 401));
+        }
 
         const cuadro_venta = await prisma.cuadro_ventas.create({
             data: {
@@ -288,12 +296,24 @@ export const update_cuadro_venta = async (req: Request, res: Response, next: Nex
             gastos_caja_menor
         } = req.body;
 
+        //Validates if cuadro ventas exists and if the user is authorized
+        const cuadro_venta = await prisma.cuadro_ventas.findUnique({
+            where: { id: +id },
+        });
+        if(!req.user.isAdmin && !req.user.empresas.includes(+cuadro_venta.empresa_id)){
+            return next(createError('Unauthorized', 401));
+        }
+
         if(!empresa_id){
             const empresa = await prisma.empresa.findUnique({
                 where: { id: +empresa_id },
             });
             if (!empresa) {
                 return next(createError('Empresa not found', 404));
+            }
+            //Validates if the user is authorized in the new empresa
+            if(!req.user.isAdmin && !req.user.empresas.includes(+empresa_id)){
+                return next(createError('Unauthorized', 401));
             }
         }
 
@@ -331,6 +351,11 @@ export const delete_cuadro_venta = async (req: Request, res: Response, next: Nex
         const cuadro_venta = await prisma.cuadro_ventas.delete({
             where: { id: +id },
         });
+        
+        if(!req.user.isAdmin && !req.user.empresas.includes(+cuadro_venta.empresa_id)){
+            return next(createError('Unauthorized', 401));
+        }
+        
         res.status(200).json(cuadro_venta);
     } catch (error) {
         next(error);
