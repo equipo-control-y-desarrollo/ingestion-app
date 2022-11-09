@@ -216,6 +216,7 @@ export const get_cuadros_ventas_by_empresa = async (req: Request, res: Response,
 export const create_cuadro_venta = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const {
+            fecha,
             empresa_id,
             ventas_mañana,
             ventas_tarde,
@@ -248,6 +249,7 @@ export const create_cuadro_venta = async (req: Request, res: Response, next: Nex
 
         const cuadro_venta = await prisma.cuadro_ventas.create({
             data: {
+                fecha: new Date(fecha),
                 empresa_id: empresa_id,
                 ventas_ma_ana: ventas_mañana,
                 ventas_tarde: ventas_tarde,
@@ -277,6 +279,7 @@ export const update_cuadro_venta = async (req: Request, res: Response, next: Nex
     try {
         const { id } = req.params;
         const {
+            fecha,
             empresa_id,
             ventas_mañana,
             ventas_tarde,
@@ -317,9 +320,12 @@ export const update_cuadro_venta = async (req: Request, res: Response, next: Nex
             }
         }
 
+        const new_fecha = fecha ? new Date(fecha) : undefined;
+
         const updated_cuadro_venta = await prisma.cuadro_ventas.update({
             where: { id: +id },
             data: {
+                fecha: new_fecha,
                 empresa_id: empresa_id || undefined,
                 ventas_ma_ana: ventas_mañana || undefined,
                 ventas_tarde: ventas_tarde || undefined,

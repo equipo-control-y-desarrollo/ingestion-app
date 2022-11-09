@@ -39,26 +39,27 @@ model categoria {
 }
 
 model cuadro_ventas {
-  id                Int     @id @default(autoincrement())
+  id                Int      @id @default(autoincrement())
+  fecha             DateTime @db.Date
   empresa_id        Int
-  ventas_ma_ana     Float?  @default(0) @map("ventas_mañana") @db.Float
-  ventas_tarde      Float?  @default(0) @db.Float
-  ventas_totales    Float?  @db.Float
-  efectivo          Float?  @default(0) @db.Float
-  datafono          Float?  @default(0) @db.Float
-  transferencia     Float?  @default(0) @db.Float
-  propinas          Float?  @default(0) @db.Float
-  iva               Float?  @default(0) @db.Float
-  hipoconsumo       Float?  @default(0) @db.Float
-  venta_neta        Float?  @db.Float
+  ventas_ma_ana     Float?   @default(0) @map("ventas_mañana") @db.Float
+  ventas_tarde      Float?   @default(0) @db.Float
+  ventas_totales    Float?   @db.Float
+  efectivo          Float?   @default(0) @db.Float
+  datafono          Float?   @default(0) @db.Float
+  transferencia     Float?   @default(0) @db.Float
+  propinas          Float?   @default(0) @db.Float
+  iva               Float?   @default(0) @db.Float
+  hipoconsumo       Float?   @default(0) @db.Float
+  venta_neta        Float?   @db.Float
   tks               Int
-  tks_promedio      Float?  @db.Float
-  epayco            Float?  @default(0) @db.Float
-  ventas_cafe       Float?  @default(0) @db.Float
-  ventas_bar        Float?  @default(0) @db.Float
-  ventas_mercado    Float?  @default(0) @db.Float
-  gastos_caja_menor Float?  @default(0) @db.Float
-  empresa           empresa @relation(fields: [empresa_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "cuadro_ventas_ibfk_1")
+  tks_promedio      Float?   @db.Float
+  epayco            Float?   @default(0) @db.Float
+  ventas_cafe       Float?   @default(0) @db.Float
+  ventas_bar        Float?   @default(0) @db.Float
+  ventas_mercado    Float?   @default(0) @db.Float
+  gastos_caja_menor Float?   @default(0) @db.Float
+  empresa           empresa  @relation(fields: [empresa_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "cuadro_ventas_ibfk_1")
 
   @@index([empresa_id], map: "empresa_id")
 }
@@ -103,15 +104,15 @@ model empresa {
   cuenta_pendiente                          cuenta_pendiente[]
   flujo_caja_empresaToflujo_caja_empresa_id flujo_caja[]       @relation("empresaToflujo_caja_empresa_id")
   registro_ventas                           registro_ventas[]
-  usuarios                                  usuario[]
+  usuario                                   usuario[]          @relation("empresatousuario")
 }
 
 model usuario {
-  id Int @id @default(autoincrement())
-  username String @unique(map: "username") @db.VarChar(20)
-  password String @db.VarChar(60)
-  isAdmin Boolean @default(false)
-  empresas empresa[]
+  id       Int       @id @default(autoincrement())
+  username String    @unique(map: "username") @db.VarChar(20)
+  password String    @db.VarChar(60)
+  isAdmin  Boolean   @default(false)
+  empresa  empresa[] @relation("empresatousuario")
 }
 
 model flujo_caja {
