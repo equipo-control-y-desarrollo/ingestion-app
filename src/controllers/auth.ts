@@ -16,11 +16,20 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
     try {
         const { username, password, isAdmin, empresas } = req.body;
         const hashedPassword = await hashPassword(password);
+        
+        //Validates if empresa exists
+        const empresasValidas = await prisma.empresa.findMany({
+            where: { id: { in: empresas } },
+        });
+        if(empresasValidas.length !== empresas.length){
+            return next(createError('Empresas not found', 404));
+        }
+
         const usuario = await prisma.usuario.create({
             data: {
                 username: username,
                 password: hashedPassword,
-                isAdmin: isAdmin,
+                isAdmin: isAdmin || undefined,
                 empresas: {
                     connect: empresas.map((empresa: number) => ({ id: empresa })),
                 },

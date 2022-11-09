@@ -11,10 +11,11 @@ import cuentasRouter from './routes/cuentas';
 import flujoCajaRouter from './routes/flujo_caja';
 import ventasRouter from './routes/ventas';
 import authRouter from './routes/auth';
+
 import { verifyAdmin } from './utils/jwt' 
 
-
 import { handleError } from './utils/errors';
+import { verifyToken } from './utils/jwt';
 
 dotenv.config();
 
@@ -27,13 +28,17 @@ app.use(cors());
 app.use(helmet());
 app.use(cookieParser());
 
+app.use('/auth',authRouter);
+
+//Token verification for routes
+app.use(verifyToken);
+
 app.use('/empresa', verifyAdmin,empresaRouter);
 app.use('/cartera',carteraRouter);
 app.use('/cuenta_pendiente',cuentaPendienteRouter);
 app.use('/cuentas',cuentasRouter);
 app.use('/flujocaja',flujoCajaRouter);
 app.use('/ventas',ventasRouter);
-app.use('/auth',authRouter);
 
 // Error handler
 app.use(handleError);

@@ -40,7 +40,6 @@ model categoria {
 
 model cuadro_ventas {
   id                Int      @id @default(autoincrement())
-  fecha             DateTime @db.Date
   empresa_id        Int
   ventas_ma_ana     Float?   @default(0) @map("ventas_mañana") @db.Float
   ventas_tarde      Float?   @default(0) @db.Float
@@ -59,7 +58,7 @@ model cuadro_ventas {
   ventas_bar        Float?   @default(0) @db.Float
   ventas_mercado    Float?   @default(0) @db.Float
   gastos_caja_menor Float?   @default(0) @db.Float
-  empresa           empresa  @relation(fields: [empresa_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "cuadro_ventas_ibfk_1")
+  fecha             DateTime @db.Date
 
   @@index([empresa_id], map: "empresa_id")
 }
@@ -70,7 +69,6 @@ model cuenta {
   empresa_id Int
   numero     String       @db.VarChar(20)
   tipo       cuenta_tipo
-  empresa    empresa      @relation(fields: [empresa_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "cuenta_ibfk_1")
   movimiento movimiento[]
 
   @@index([empresa_id], map: "empresa_id")
@@ -90,21 +88,16 @@ model cuenta_pendiente {
   total          Int?
   fecha_vencida  DateTime @db.Date
   empresa_id     Int
-  empresa        empresa  @relation(fields: [empresa_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "cuenta_pendiente_ibfk_1")
 
   @@index([empresa_id], map: "empresa_id")
 }
 
 model empresa {
-  id                                        Int                @id @default(autoincrement())
-  nombre                                    String             @unique(map: "nombre") @db.VarChar(30)
-  cartera                                   cartera[]
-  cuadro_ventas                             cuadro_ventas[]
-  cuenta                                    cuenta[]
-  cuenta_pendiente                          cuenta_pendiente[]
-  flujo_caja_empresaToflujo_caja_empresa_id flujo_caja[]       @relation("empresaToflujo_caja_empresa_id")
-  registro_ventas                           registro_ventas[]
-  usuario                                   usuario[]          @relation("empresatousuario")
+  id              Int               @id @default(autoincrement())
+  nombre          String            @unique(map: "nombre") @db.VarChar(30)
+  cartera         cartera[]
+  registro_ventas registro_ventas[]
+  usuario         usuario[]         @relation("empresatousuario")
 }
 
 model usuario {
@@ -112,16 +105,15 @@ model usuario {
   username String    @unique(map: "username") @db.VarChar(20)
   password String    @db.VarChar(60)
   isAdmin  Boolean   @default(false)
-  empresa  empresa[] @relation("empresatousuario")
+  empresas empresa[] @relation("empresatousuario")
 }
 
 model flujo_caja {
-  id                                     Int         @id @default(autoincrement())
-  fecha                                  DateTime    @db.Date
-  empresa_id                             Int
-  saldo_anterior                         Float?      @default(0) @db.Float
-  empresa_empresaToflujo_caja_empresa_id empresa     @relation("empresaToflujo_caja_empresa_id", fields: [empresa_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "flujo_caja_ibfk_1")
-  categoria                              categoria[]
+  id             Int         @id @default(autoincrement())
+  fecha          DateTime    @db.Date
+  empresa_id     Int
+  saldo_anterior Float?      @default(0) @db.Float
+  categoria      categoria[]
 
   @@index([empresa_id], map: "empresa_id")
 }

@@ -133,6 +133,9 @@ export const update_cartera = async (req: Request, res: Response, next: NextFunc
             next(createError('Unauthorized', 401));
         }
 
+        const new_fecha_factura = fecha_factura ? new Date(fecha_factura) : undefined;
+        const new_fecha_vencimiento = fecha_vencimiento ? new Date(fecha_vencimiento) : undefined;
+
 
         const cartera_update = await prisma.cartera.update({
             where: {id: +id},
@@ -140,8 +143,8 @@ export const update_cartera = async (req: Request, res: Response, next: NextFunc
                 empresa_id: empresa_id || undefined,
                 valor: valor || undefined,
                 valor_abonado: valor_abonado || undefined,
-                fecha_factura: new Date(fecha_factura) || undefined,
-                fecha_vencimiento: new Date(fecha_vencimiento) || undefined,
+                fecha_factura: new_fecha_factura,
+                fecha_vencimiento: new_fecha_vencimiento,
                 estado: estado || undefined,
                 nro_factura: nro_factura || undefined,
                 proyecto: proyecto || undefined

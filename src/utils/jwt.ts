@@ -23,13 +23,13 @@ export const verifyToken = (req: Response, res: Response, next: NextFunction) =>
             }
             req['user'] = decoded;
         });
+        next();
     } catch (error) {
         next(error);
     }
 }
 
 export const verifyAdmin = (req: Request, res: Response, next: NextFunction) => {
-    verifyToken(req, res, next);
     if (req['user'].isAdmin) {
         next();
     } else {
@@ -37,14 +37,8 @@ export const verifyAdmin = (req: Request, res: Response, next: NextFunction) => 
     }
 };
 
-export const verifyUser = (req: Request, res: Response, next: NextFunction) => {
-    verifyToken(req, res, next);
-    next();
-};
-
 
 export const verifyEmpresa = (req: Request, res: Response, next: NextFunction) => {
-    verifyToken(req, res, next);
     if (req['user'].empresas.includes(+req.params.empresa_id) || req['user'].isAdmin) {
         next();
     } else {
