@@ -132,7 +132,7 @@ model registro_ventas {
 
 model movimiento {
   id             Int      @id @default(autoincrement())
-  fecha          DateTime @default(dbgenerated("(curdate())")) @db.Date
+  fecha          DateTime @db.Date
   saldo_inicial  Float    @db.Float
   ingreso        Float?   @default(0) @db.Float
   pago           Float?   @default(0) @db.Float
