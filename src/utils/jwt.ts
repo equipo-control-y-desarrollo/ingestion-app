@@ -15,7 +15,7 @@ export const generateToken = (payload: any) => {
     return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' })
 }
 
-export const verifyToken = (req: Response, res: Response, next: NextFunction) => {
+export const verifyToken = (req: Request, res: Response, next: NextFunction) => {
     try {
         jwt.verify(req.cookies.token, process.env.JWT_SECRET, (err, decoded) => {
             if (err) {

@@ -6,6 +6,16 @@ import { createError } from "../utils/errors";
 const prisma = new PrismaClient();
 
 export const get_cuentas_pendientes = async ( req: Request, res: Response, next: NextFunction ) => {
+    /**
+     * Gets all the cuentas pendientes from the database
+     * @param req Request
+     * @param res Response
+     * @param next NextFunction
+     * 
+     * @returns {Promise<Response>} Response
+     * 
+     * @throws {Error} Error
+     */
     try {
         const cuentas_pendientes = await prisma.cuenta_pendiente.findMany();
         res.json( cuentas_pendientes );
@@ -15,6 +25,17 @@ export const get_cuentas_pendientes = async ( req: Request, res: Response, next:
 };
 
 export const get_cuenta_pendiente = async ( req: Request, res: Response, next: NextFunction ) => {
+    /**
+     * Gets an specific cuenta pendiente from the database
+     * @param req Request
+     * @param res Response
+     * @param next NextFunction
+     * 
+     * @returns {Promise<Response>} Response
+     * 
+     * @throws {Error} Error
+     **/ 
+
     try {
         const { id } = req.params;
         const cuenta_pendiente = await prisma.cuenta_pendiente.findUnique( {
@@ -35,6 +56,16 @@ export const get_cuenta_pendiente = async ( req: Request, res: Response, next: N
 };
 
 export const get_cuentas_pendientes_by_empresa = async ( req: Request, res: Response, next: NextFunction ) => {
+    /**
+     * Gets all the cuentas pendientes from an specific empresa
+     * @param req Request
+     * @param res Response
+     * @param next NextFunction
+     * 
+     * @returns {Promise<Response>} Response
+     * 
+     * @throws {Error} Error
+    */
     try {
         const { empresa_id } = req.params;
         const empresa = await prisma.empresa.findUnique( {
@@ -54,6 +85,17 @@ export const get_cuentas_pendientes_by_empresa = async ( req: Request, res: Resp
 };
 
 export const create_cuenta_pendiente = async ( req: Request, res: Response, next: NextFunction ) => {
+    /**
+     * Creates a new cuenta pendiente
+     * @param req Request
+     * @param res Response
+     * @param next NextFunction
+     *  
+     * @returns {Promise<Response>} Response
+     * 
+     * @throws {Error} Error
+     */
+
     try {
         const {
             proyecto,
@@ -103,6 +145,17 @@ export const create_cuenta_pendiente = async ( req: Request, res: Response, next
 };
 
 export const update_cuenta_pendiente = async ( req: Request, res: Response, next: NextFunction ) => {
+    /**
+     * Updates an specific cuenta pendiente
+     * @param req Request
+     * @param res Response
+     * @param next NextFunction
+     * 
+     * @returns {Promise<Response>} Response
+     * 
+     * @throws {Error} Error
+     */
+
     try {
         const { id } = req.params;
         const {
@@ -142,6 +195,9 @@ export const update_cuenta_pendiente = async ( req: Request, res: Response, next
                 return next( createError( 'Unauthorized', 401 ) );
             }
         }
+
+        const new_fecha_recibido = fecha_recibido ? new Date(fecha_recibido) : undefined;
+        const new_fecha_vencida = fecha_vencida ? new Date(fecha_vencida) : undefined;
         
         const cuenta_pendiente_updated = await prisma.cuenta_pendiente.update( {
             where: { id: +id },
@@ -150,12 +206,12 @@ export const update_cuenta_pendiente = async ( req: Request, res: Response, next
                 nit: nit || undefined,
                 proveedor: proveedor || undefined,
                 nfactura: nfactura || undefined,
-                fecha_recibido: fecha_recibido || undefined,
+                fecha_recibido: new_fecha_recibido,
                 estado: estado || undefined,
                 inmediato: inmediato || undefined,
                 dias_30: dias_30 || undefined,
                 dias_60: dias_60 || undefined,
-                fecha_vencida: fecha_vencida || undefined,
+                fecha_vencida: new_fecha_vencida,
                 empresa_id: empresa_id || undefined
             },
         });
@@ -167,6 +223,17 @@ export const update_cuenta_pendiente = async ( req: Request, res: Response, next
 };
 
 export const delete_cuenta_pendiente = async ( req: Request, res: Response, next: NextFunction ) => {
+    /**
+     * Deletes an specific cuenta pendiente
+     * @param req Request
+     * @param res Response
+     * @param next NextFunction
+     * 
+     * @returns {Promise<Response>} Response
+     * 
+     * @throws {Error} Error
+     */
+    
     try {
         const { id } = req.params;
         

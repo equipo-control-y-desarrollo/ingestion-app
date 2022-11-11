@@ -58,7 +58,7 @@ model cuadro_ventas {
   ventas_bar        Float?   @default(0) @db.Float
   ventas_mercado    Float?   @default(0) @db.Float
   gastos_caja_menor Float?   @default(0) @db.Float
-  fecha             DateTime @db.Date
+  fecha             DateTime @unique(map: "fecha") @db.Date
 
   @@index([empresa_id], map: "empresa_id")
 }
@@ -110,7 +110,7 @@ model usuario {
 
 model flujo_caja {
   id             Int         @id @default(autoincrement())
-  fecha          DateTime    @db.Date
+  fecha          DateTime    @unique(map: "fecha") @db.Date
   empresa_id     Int
   saldo_anterior Float?      @default(0) @db.Float
   categoria      categoria[]
@@ -132,7 +132,7 @@ model registro_ventas {
 
 model movimiento {
   id             Int      @id @default(autoincrement())
-  fecha          DateTime @db.Date
+  fecha          DateTime @unique(map: "fecha") @db.Date
   saldo_inicial  Float    @db.Float
   ingreso        Float?   @default(0) @db.Float
   pago           Float?   @default(0) @db.Float
