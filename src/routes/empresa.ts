@@ -9,15 +9,22 @@ import {
     deleteEmpresa
 
 } from '../controllers/empresa'
+import {
+    createEmpresaSchema,
+    updateEmpresaSchema,
+    deleteEmpresaSchema,
+    getEmpresaSchema
+} from '../schemas/empresa.schema'
+import {validate} from '../utils/validation'
 
 const prisma = new PrismaClient()
 
 const router = Router()
 
 router.get('/', getEmpresas)
-router.get('/:id', getEmpresa)
-router.post('/', createEmpresa)
-router.put('/:id', updateEmpresa)
-router.delete('/:id', deleteEmpresa)
+router.get('/:id', validate(getEmpresaSchema), getEmpresa)
+router.post('/', validate(createEmpresaSchema), createEmpresa)
+router.put('/:id', validate(updateEmpresaSchema), updateEmpresa)
+router.delete('/:id', validate(deleteEmpresaSchema), deleteEmpresa)
 
 export default router

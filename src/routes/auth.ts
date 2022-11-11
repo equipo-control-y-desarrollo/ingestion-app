@@ -7,12 +7,12 @@ import {
     signup,
 } from "../controllers/auth";
 
-import { loginValidation, signupValidation } from '../Schemas/auth.schemas';
+import { loginSchema, signupSchema } from '../schemas/auth.schema';
 import { validate } from '../utils/validation';
 
 const router = Router();
 
-router.post('/login', validate(loginValidation),login);
-router.post('/signup', validate(signupValidation),signup);
+router.post('/login', validate(loginSchema),login);
+router.post('/signup', validate(signupSchema),signup);
 
 export default router;

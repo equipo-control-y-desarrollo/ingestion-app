@@ -9,16 +9,24 @@ import {
 } from "../controllers/cartera";
 
 import { verifyAdmin, verifyEmpresa } from '../utils/jwt' 
+import { validate } from "../utils/validation";
+import {
+    createCarteraSchema,
+    updateCarteraSchema,
+    deleteCarteraSchema,
+    getCarteraSchema,
+    getCarteraByEmpresa
+} from "../schemas/cartera.schema";
 
 import { Router } from 'express';
 
 const router = Router();
 
-router.get('/empresa/:empresa_id', verifyEmpresa, get_carteras_by_empresa);
+router.get('/empresa/:empresa_id', [validate(getCarteraByEmpresa), verifyEmpresa], get_carteras_by_empresa);
 router.get('/', verifyAdmin, get_carteras);
-router.get('/:id',   get_cartera);
-router.post('/',   create_cartera);
-router.put('/:id',   update_cartera);
-router.delete('/:id',   delete_cartera);
+router.get('/:id', validate(getCarteraSchema) ,get_cartera);
+router.post('/', validate(createCarteraSchema), create_cartera);
+router.put('/:id', validate(updateCarteraSchema), update_cartera);
+router.delete('/:id', validate(deleteCarteraSchema),delete_cartera);
 
 export default router;
