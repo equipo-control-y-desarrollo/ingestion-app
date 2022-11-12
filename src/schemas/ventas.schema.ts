@@ -23,7 +23,7 @@ export const createVentaSchema = z.object({
             required_error: "Valor total is required",
             invalid_type_error: "Valor total must be a number"
         }).positive()
-    }),
+    }).strict(),
 });
 
 export const updateVentaSchema = z.object({
@@ -32,7 +32,7 @@ export const updateVentaSchema = z.object({
             required_error: "Id is required",
             invalid_type_error: "Id must be a number"
         }),
-    }),
+    }).strict(),
     body: z.object({
         fecha: z.optional(
             z.string({
@@ -64,7 +64,7 @@ export const updateVentaSchema = z.object({
                 invalid_type_error: "Valor total must be a number"
             }).positive()
         )
-    }),
+    }).strict(),
 });
 
 export const getVentaSchema = z.object({
@@ -73,7 +73,7 @@ export const getVentaSchema = z.object({
             required_error: "Id is required",
             invalid_type_error: "Id must be a number"
         }),
-    }),
+    }).strict(),
 });
 
 export const getVentaByEmpresaSchema = z.object({
@@ -82,7 +82,7 @@ export const getVentaByEmpresaSchema = z.object({
             required_error: "Empresa id is required",
             invalid_type_error: "Empresa id must be a number"
         }),
-    }),
+    }).strict(),
 });
 
 export const deleteVentaSchema = z.object({
@@ -91,7 +91,7 @@ export const deleteVentaSchema = z.object({
             required_error: "Id is required",
             invalid_type_error: "Id must be a number"
         }),
-    }),
+    }).strict(),
 });
 
 // Schemas for cuadro ventas
@@ -189,7 +189,7 @@ export const createCuadroVentaSchema = z.object({
             required_error: "Fecha is required",
             invalid_type_error: "Fecha must be a string"
         }).length(10)
-    }),
+    }).strict(),
 });
 
 export const updateCuadroVentaSchema = z.object({
@@ -198,7 +198,7 @@ export const updateCuadroVentaSchema = z.object({
             required_error: "Id is required",
             invalid_type_error: "Id must be a number"
         }),
-    }),
+    }).strict(),
     body: z.object({
         empresa_id : z.optional(
             z.number({
@@ -296,7 +296,7 @@ export const updateCuadroVentaSchema = z.object({
                 invalid_type_error: "Fecha must be a string"
             }).length(10)
         )
-    }),
+    }).strict(),
 });
 
 export const getCuadroVentaSchema = z.object({
@@ -305,7 +305,7 @@ export const getCuadroVentaSchema = z.object({
             required_error: "Id is required",
             invalid_type_error: "Id must be a number"
         }),
-    }),
+    }).strict(),
 });
 
 export const getCuadroVentaByEmpresaSchema = z.object({
@@ -314,7 +314,7 @@ export const getCuadroVentaByEmpresaSchema = z.object({
             required_error: "Empresa id is required",
             invalid_type_error: "Empresa id must be a number"
         }),
-    }),
+    }).strict(),
 });
 
 export const deleteCuadroVentaSchema = z.object({
@@ -323,6 +323,6 @@ export const deleteCuadroVentaSchema = z.object({
             required_error: "Id is required",
             invalid_type_error: "Id must be a number"
         }),
-    }),
+    }).strict(),
 });
 

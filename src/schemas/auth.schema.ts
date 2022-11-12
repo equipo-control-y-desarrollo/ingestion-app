@@ -10,7 +10,7 @@ export const loginSchema = z.object({
             required_error: "Password is required",
             invalid_type_error: "Password must be a string"
         }).min(5).max(60),
-    }),
+    }).strict(),
 });
 
 export const signupSchema = z.object({
@@ -32,5 +32,5 @@ export const signupSchema = z.object({
             required_error: "Empresas is required",
             invalid_type_error: "Empresas must be an array of numbers"
         })),
-    }),
+    }).strict(),
 });

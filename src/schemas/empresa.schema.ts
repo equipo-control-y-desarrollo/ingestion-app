@@ -6,7 +6,7 @@ export const createEmpresaSchema = z.object({
             required_error: "Nombre is required",
             invalid_type_error: "Nombre must be a string"
         }).min(5).max(30),
-    }),
+    }).strict(),
 });
 
 export const updateEmpresaSchema = z.object({
@@ -15,14 +15,14 @@ export const updateEmpresaSchema = z.object({
             required_error: "Id is required",
             invalid_type_error: "Id must be a number"
         }),
-    }),
+    }).strict(),
     body: z.object({
         nombre: z.optional(
             z.string({
                 invalid_type_error: "Nombre must be a string"
             }).min(5).max(30)
         )
-    }),
+    }).strict(),
 });
 
 export const deleteEmpresaSchema = z.object({
@@ -31,7 +31,7 @@ export const deleteEmpresaSchema = z.object({
             required_error: "Id is required",
             invalid_type_error: "Id must be a number"
         }),
-    }),
+    }).strict(),
 });
 
 export const getEmpresaSchema = z.object({
@@ -40,7 +40,7 @@ export const getEmpresaSchema = z.object({
             required_error: "Id is required",
             invalid_type_error: "Id must be a number"
         }),
-    }),
+    }).strict(),
 });
     
 

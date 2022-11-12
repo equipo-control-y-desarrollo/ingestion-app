@@ -16,21 +16,35 @@ import {
 
 import { verifyAdmin, verifyEmpresa } from "../utils/jwt";
 
+import { validate } from "../utils/validation";
+import {
+  createCuentaSchema,
+  updateCuentaSchema,
+  deleteCuentaSchema,
+  getCuentaSchema,
+  getCuentaByEmpresaSchema,
+  createMovimientoSchema,
+  updateMovimientoSchema,
+  deleteMovimientoSchema,
+  getMovimientoSchema,
+  getMovimientoByCuentaSchema
+} from "../schemas/cuentas.schema";
+
 const router = Router();
 
 //Cuentas bancarias router
-router.get("/empresa/:empresa_id", verifyEmpresa, get_cuentas_by_empresa);
+router.get("/empresa/:empresa_id", [validate(getCuentaByEmpresaSchema), verifyEmpresa], get_cuentas_by_empresa);
 router.get("/", verifyAdmin, get_cuentas);
-router.get("/:id", get_cuenta);
-router.post("/", create_cuenta);
-router.put("/:id", update_cuenta);
-router.delete("/:id", delete_cuenta);
+router.get("/:id", validate(getCuentaSchema), get_cuenta);
+router.post("/", validate(createCuentaSchema), create_cuenta);
+router.put("/:id", validate(updateCuentaSchema), update_cuenta);
+router.delete("/:id", validate(deleteCuentaSchema), delete_cuenta);
 
 //Movimientos bancarios router
-router.get("/movimientos/cuenta/:cuenta_id", get_movimientos_by_cuenta);
-router.get("/movimientos/:id", get_movimiento);
-router.post("/movimientos", create_movimiento);
-router.put("/movimientos/:id", update_movimiento);
-router.delete("/movimientos/:id", delete_movimiento);
+router.get("/movimientos/cuenta/:cuenta_id", validate(getMovimientoByCuentaSchema), get_movimientos_by_cuenta);
+router.get("/movimientos/:id", validate(getMovimientoSchema), get_movimiento);
+router.post("/movimientos", validate(createMovimientoSchema), create_movimiento);
+router.put("/movimientos/:id", validate(updateMovimientoSchema), update_movimiento);
+router.delete("/movimientos/:id", validate(deleteMovimientoSchema), delete_movimiento);
 
 export default router;

@@ -52,7 +52,7 @@ export const createCuentaPendienteSchema = z.object({
             required_error: "Empresa id is required",
             invalid_type_error: "Empresa id must be a number"
         }).positive(),
-    }),
+    }).strict(),
 });
 
 export const updateCuentaPendienteSchema = z.object({
@@ -61,7 +61,7 @@ export const updateCuentaPendienteSchema = z.object({
             required_error: "Id is required",
             invalid_type_error: "Id must be a number"
         }),
-    }),
+    }).strict(),
     body: z.object({
         proyecto: z.optional(
             z.string({
@@ -118,7 +118,7 @@ export const updateCuentaPendienteSchema = z.object({
                 invalid_type_error: "Empresa id must be a number"
             }).positive()
         ),
-    }),
+    }).strict(),
 });
 
 export const deleteCuentaPendienteSchema = z.object({
@@ -127,7 +127,7 @@ export const deleteCuentaPendienteSchema = z.object({
             required_error: "Id is required",
             invalid_type_error: "Id must be a number"
         }),
-    }),
+    }).strict(),
 });
 
 export const getCuentaPendienteSchema = z.object({
@@ -136,7 +136,7 @@ export const getCuentaPendienteSchema = z.object({
             required_error: "Id is required",
             invalid_type_error: "Id must be a number"
         }),
-    }),
+    }).strict(),
 });
 
 export const getCuentaPendienteByEmpresaSchema = z.object({
@@ -145,5 +145,5 @@ export const getCuentaPendienteByEmpresaSchema = z.object({
             required_error: "Empresa id is required",
             invalid_type_error: "Empresa id must be a number"
         }),
-    }),
+    }).strict(),
 });

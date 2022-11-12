@@ -36,7 +36,7 @@ export const createCarteraSchema = z.object({
             required_error: "Empresa id is required",
             invalid_type_error: "Empresa id must be a number"
         }).positive(),
-    }),
+    }).strict(),
 });
 
 export const updateCarteraSchema = z.object({
@@ -45,7 +45,7 @@ export const updateCarteraSchema = z.object({
             required_error: "Id is required",
             invalid_type_error: "Id must be a number"
         }),
-    }),
+    }).strict(),
     body: z.object({
         valor: z.optional(
             z.number({
@@ -93,7 +93,7 @@ export const updateCarteraSchema = z.object({
                 invalid_type_error: "Empresa id must be a number"
             }).positive()
         ),
-    }),
+    }).strict(),
 });
 
 export const deleteCarteraSchema = z.object({
@@ -102,7 +102,7 @@ export const deleteCarteraSchema = z.object({
             required_error: "Id is required",
             invalid_type_error: "Id must be a number"
         }),
-    }),
+    }).strict(),
 });
 
 export const getCarteraSchema = z.object({
@@ -111,7 +111,7 @@ export const getCarteraSchema = z.object({
             required_error: "Id is required",
             invalid_type_error: "Id must be a number"
         }),
-    }),
+    }).strict(),
 });
 
 export const getCarteraByEmpresa = z.object({
@@ -120,7 +120,7 @@ export const getCarteraByEmpresa = z.object({
             required_error: "Empresa id is required",
             invalid_type_error: "Empresa id must be a number"
         }),
-    }),
+    }).strict(),
 });
 
         
