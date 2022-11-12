@@ -19,24 +19,39 @@ import {
 
 import { verifyAdmin, verifyEmpresa } from "../utils/jwt";
 
+import { validate } from "../utils/validation";
+import {
+  createVentaSchema,
+  updateVentaSchema,
+  deleteVentaSchema,
+  getVentaSchema,
+  getVentaByEmpresaSchema,
+  createCuadroVentaSchema,
+  updateCuadroVentaSchema,
+  deleteCuadroVentaSchema,
+  getCuadroVentaSchema,
+  getCuadroVentaByEmpresaSchema,
+} from "../schemas/ventas.schema";
+
+
 const router = Router();
 
-router.get("/empresa/:empresa_id", verifyEmpresa, get_ventas_by_empresa);
+router.get("/empresa/:empresa_id", [validate(getVentaByEmpresaSchema), verifyEmpresa], get_ventas_by_empresa);
 router.get("/", verifyAdmin, get_ventas);
-router.get("/:id", get_venta);
-router.post("/", create_venta);
-router.put("/:id", update_venta);
-router.delete("/:id", delete_venta);
+router.get("/:id", validate(getVentaSchema),get_venta);
+router.post("/", validate(createVentaSchema), create_venta);
+router.put("/:id", validate(updateVentaSchema), update_venta);
+router.delete("/:id", validate(deleteVentaSchema), delete_venta);
 
 router.get(
   "/cuadros/empresa/:empresa_id",
-  verifyEmpresa,
+  [validate(getCuadroVentaByEmpresaSchema), verifyEmpresa],
   get_cuadros_ventas_by_empresa
 );
 router.get("/cuadros/", verifyAdmin, get_cuadros_ventas);
-router.get("/cuadros/:id", get_cuadro_venta);
-router.post("/cuadros/", create_cuadro_venta);
-router.put("/cuadros/:id", update_cuadro_venta);
-router.delete("/cuadros/:id", delete_cuadro_venta);
+router.get("/cuadros/:id", validate(getCuadroVentaSchema),get_cuadro_venta);
+router.post("/cuadros/", validate(createCuadroVentaSchema), create_cuadro_venta);
+router.put("/cuadros/:id", validate(updateCuadroVentaSchema), update_cuadro_venta);
+router.delete("/cuadros/:id", validate(deleteCuadroVentaSchema), delete_cuadro_venta);
 
 export default router;
