@@ -11,7 +11,7 @@ export const createEmpresaSchema = z.object({
 
 export const updateEmpresaSchema = z.object({
     params: z.object({
-        id: z.number({
+        id: z.string({
             required_error: "Id is required",
             invalid_type_error: "Id must be a number"
         }),
@@ -27,7 +27,7 @@ export const updateEmpresaSchema = z.object({
 
 export const deleteEmpresaSchema = z.object({
     params: z.object({
-        id: z.number({
+        id: z.string({
             required_error: "Id is required",
             invalid_type_error: "Id must be a number"
         }),
@@ -36,7 +36,7 @@ export const deleteEmpresaSchema = z.object({
 
 export const getEmpresaSchema = z.object({
     params: z.object({
-        id: z.number({
+        id: z.string({
             required_error: "Id is required",
             invalid_type_error: "Id must be a number"
         }),

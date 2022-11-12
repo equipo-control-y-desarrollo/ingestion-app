@@ -41,7 +41,7 @@ export const createCarteraSchema = z.object({
 
 export const updateCarteraSchema = z.object({
     params: z.object({
-        id: z.number({
+        id: z.string({
             required_error: "Id is required",
             invalid_type_error: "Id must be a number"
         }),
@@ -98,7 +98,7 @@ export const updateCarteraSchema = z.object({
 
 export const deleteCarteraSchema = z.object({
     params: z.object({
-        id: z.number({
+        id: z.string({
             required_error: "Id is required",
             invalid_type_error: "Id must be a number"
         }),
@@ -107,7 +107,7 @@ export const deleteCarteraSchema = z.object({
 
 export const getCarteraSchema = z.object({
     params: z.object({
-        id: z.number({
+        id: z.string({
             required_error: "Id is required",
             invalid_type_error: "Id must be a number"
         }),
@@ -116,7 +116,7 @@ export const getCarteraSchema = z.object({
 
 export const getCarteraByEmpresa = z.object({
     params: z.object({
-        empresa_id: z.number({
+        empresa_id: z.string({
             required_error: "Empresa id is required",
             invalid_type_error: "Empresa id must be a number"
         }),

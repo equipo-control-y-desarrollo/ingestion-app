@@ -1,6 +1,6 @@
 import { z, AnyZodObject } from "zod";
 
-export const loginValidation = z.object({
+export const loginSchema = z.object({
     body: z.object({
         username: z.string({
             required_error: "Username is required",
@@ -13,7 +13,7 @@ export const loginValidation = z.object({
     }),
 });
 
-export const signupValidation = z.object({
+export const signupSchema = z.object({
     body: z.object({
         username: z.string({
             required_error: "Username is required",

@@ -12,17 +12,26 @@ import {
 
 import { verifyAdmin, verifyEmpresa } from "../utils/jwt";
 
+import { validate } from "../utils/validation";
+import {
+  createCuentaPendienteSchema,
+  updateCuentaPendienteSchema,
+  deleteCuentaPendienteSchema,
+  getCuentaPendienteSchema,
+  getCuentaPendienteByEmpresaSchema
+} from "../schemas/cuenta_pendiente.schema";
+
 const router = Router();
 
 router.get(
   "/empresa/:empresa_id",
-  verifyEmpresa,
+  [validate(getCuentaPendienteByEmpresaSchema),verifyEmpresa],
   get_cuentas_pendientes_by_empresa
 );
 router.get("/", verifyAdmin, get_cuentas_pendientes);
-router.get("/:id", get_cuenta_pendiente);
-router.post("/", create_cuenta_pendiente);
-router.put("/:id", update_cuenta_pendiente);
-router.delete("/:id", delete_cuenta_pendiente);
+router.get("/:id", validate(getCuentaPendienteSchema), get_cuenta_pendiente);
+router.post("/", validate(createCuentaPendienteSchema), create_cuenta_pendiente);
+router.put("/:id", validate(updateCuentaPendienteSchema),update_cuenta_pendiente);
+router.delete("/:id", validate(deleteCuentaPendienteSchema),delete_cuenta_pendiente);
 
 export default router;
