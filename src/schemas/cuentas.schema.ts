@@ -9,10 +9,10 @@ export const createCuentaSchema = z.object({
         empresa_id: z.number({
             required_error: "Empresa_id is required",
             invalid_type_error: "Empresa_id must be a number"
-        }).positive(),
-        tipo_cuenta: z.enum(['corriente', 'ahorros', 'fiducuenta'],{
-            required_error: "Tipo_cuenta is required", 
-            invalid_type_error: "Tipo_cuenta must be a string"
+        }).nonnegative(),
+        tipo: z.enum(['corriente', 'ahorros', 'fiducuenta'],{
+            required_error: "tipo is required", 
+            invalid_type_error: "tipo must be a string"
         }),
         numero: z.string({
             required_error: "Numero is required",
@@ -37,11 +37,11 @@ export const updateCuentaSchema = z.object({
         empresa_id: z.optional(
             z.number({
                 invalid_type_error: "Empresa_id must be a number"
-            }).positive()
+            }).nonnegative()
         ),
-        tipo_cuenta: z.optional(
+        tipo: z.optional(
             z.enum(['corriente', 'ahorros', 'fiducuenta'],{
-                invalid_type_error: "Tipo_cuenta must be a string"
+                invalid_type_error: "tipo must be a string"
             })
         ),
         numero: z.optional(
@@ -85,7 +85,7 @@ export const createMovimientoSchema = z.object({
         cuenta_id: z.number({
             required_error: "Cuenta_id is required",
             invalid_type_error: "Cuenta_id must be a number"
-        }).positive(),
+        }).nonnegative(),
         fecha: z.string({
             required_error: "Fecha is required",
             invalid_type_error: "Fecha must be a string"
@@ -93,26 +93,26 @@ export const createMovimientoSchema = z.object({
         saldo_inicial: z.number({
             required_error: "Saldo_inicial is required",
             invalid_type_error: "Saldo_inicial must be a number"
-        }).positive(),
+        }).nonnegative(),
         ingreso: z.optional(
             z.number({
                 invalid_type_error: "Ingreso must be a number"
-            }).positive()
+            }).nonnegative()
         ),
         pago: z.optional(
             z.number({
                 invalid_type_error: "Pago must be a number"
-            }).positive()
+            }).nonnegative()
         ),
         pago_impuesto: z.optional(
             z.number({
                 invalid_type_error: "Pago_impuesto must be a number"
-            }).positive()
+            }).nonnegative()
         ),
         gasto_bancario: z.optional(
             z.number({
                 invalid_type_error: "Gasto_bancario must be a number"
-            }).positive()
+            }).nonnegative()
         ),
         }).strict(),
 });
@@ -128,7 +128,7 @@ export const updateMovimientoSchema = z.object({
         cuenta_id: z.optional(
             z.number({
                 invalid_type_error: "Cuenta_id must be a number"
-            }).positive()
+            }).nonnegative()
         ),
         fecha: z.optional(
             z.string({
@@ -138,27 +138,27 @@ export const updateMovimientoSchema = z.object({
         saldo_inicial: z.optional(
             z.number({
                 invalid_type_error: "Saldo_inicial must be a number"
-            }).positive()
+            }).nonnegative()
         ),
         ingreso: z.optional(
             z.number({
                 invalid_type_error: "Ingreso must be a number"
-            }).positive()
+            }).nonnegative()
         ),
         pago: z.optional(
             z.number({
                 invalid_type_error: "Pago must be a number"
-            }).positive()
+            }).nonnegative()
         ),
         pago_impuesto: z.optional(
             z.number({
                 invalid_type_error: "Pago_impuesto must be a number"
-            }).positive()
+            }).nonnegative()
         ),
         gasto_bancario: z.optional(
             z.number({
                 invalid_type_error: "Gasto_bancario must be a number"
-            }).positive()
+            }).nonnegative()
         ),
     }).strict(),
 });

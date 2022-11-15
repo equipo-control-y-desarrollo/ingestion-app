@@ -5,11 +5,11 @@ export const createCarteraSchema = z.object({
         valor: z.number({
             required_error: "Valor is required",
             invalid_type_error: "Valor must be a number"
-        }).positive(),
+        }).nonnegative(),
         valor_abonado: z.number({
             required_error: "Valor abonado is required",
             invalid_type_error: "Valor abonado must be a number"
-        }).positive(),
+        }).nonnegative(),
         fecha_factura: z.string({
             required_error: "Fecha factura is required",
             invalid_type_error: "Fecha factura must be a string"
@@ -35,7 +35,7 @@ export const createCarteraSchema = z.object({
         empresa_id: z.number({
             required_error: "Empresa id is required",
             invalid_type_error: "Empresa id must be a number"
-        }).positive(),
+        }).nonnegative(),
     }).strict(),
 });
 
@@ -51,13 +51,13 @@ export const updateCarteraSchema = z.object({
             z.number({
                 required_error: "Valor is required",
                 invalid_type_error: "Valor must be a number"
-            }).positive(),
+            }).nonnegative(),
         ),
         valor_abonado: z.optional(
             z.number({
                 required_error: "Valor abonado is required",
                 invalid_type_error: "Valor abonado must be a number"
-            }).positive()
+            }).nonnegative()
         ),
         fecha_factura: z.optional(
             z.string({
@@ -91,7 +91,7 @@ export const updateCarteraSchema = z.object({
             z.number({
                 required_error: "Empresa id is required",
                 invalid_type_error: "Empresa id must be a number"
-            }).positive()
+            }).nonnegative()
         ),
     }).strict(),
 });

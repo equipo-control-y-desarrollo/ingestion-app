@@ -10,11 +10,11 @@ export const createVentaSchema = z.object({
         empresa_id: z.number({
             required_error: "Empresa id is required",
             invalid_type_error: "Empresa id must be a number"
-        }).positive(),
+        }).nonnegative(),
         cantidad: z.number({
             required_error: "Cantidad is required",
             invalid_type_error: "Cantidad must be a number"
-        }).positive(),
+        }).nonnegative(),
         producto: z.string({
             required_error: "Producto is required",
             invalid_type_error: "Producto must be a string"
@@ -22,7 +22,7 @@ export const createVentaSchema = z.object({
         valor_total: z.number({
             required_error: "Valor total is required",
             invalid_type_error: "Valor total must be a number"
-        }).positive()
+        }).nonnegative()
     }).strict(),
 });
 
@@ -44,13 +44,13 @@ export const updateVentaSchema = z.object({
             z.number({
                 required_error: "Empresa id is required",
                 invalid_type_error: "Empresa id must be a number"
-            }).positive()
+            }).nonnegative()
         ),
         cantidad: z.optional(
             z.number({
                 required_error: "Cantidad is required",
                 invalid_type_error: "Cantidad must be a number"
-            }).positive()
+            }).nonnegative()
         ),
         producto: z.optional(
             z.string({
@@ -62,7 +62,7 @@ export const updateVentaSchema = z.object({
             z.number({
                 required_error: "Valor total is required",
                 invalid_type_error: "Valor total must be a number"
-            }).positive()
+            }).nonnegative()
         )
     }).strict(),
 });
@@ -100,90 +100,90 @@ export const createCuadroVentaSchema = z.object({
         empresa_id : z.number({
             required_error: "Empresa id is required",
             invalid_type_error: "Empresa id must be a number"
-        }).positive(),
+        }).nonnegative(),
         ventas_mañana: z.optional(
             z.number({
                 required_error: "Ventas mañana is required",
                 invalid_type_error: "Ventas mañana must be a number"
-            }).positive()
+            }).nonnegative()
         ),
         ventas_tarde: z.optional(
             z.number({
                 required_error: "Ventas tarde is required",
                 invalid_type_error: "Ventas tarde must be a number"
-            }).positive()
+            }).nonnegative()
         ),
         efectivo: z.optional(
             z.number({
                 required_error: "Efectivo is required",
                 invalid_type_error: "Efectivo must be a number"
-            }).positive()
+            }).nonnegative()
         ),
         datafono: z.optional(
             z.number({
                 required_error: "Datafono is required",
                 invalid_type_error: "Datafono must be a number"
-            }).positive()
+            }).nonnegative()
         ),
         transferencia: z.optional(
             z.number({
                 required_error: "Transferencia is required",
                 invalid_type_error: "Transferencia must be a number"
-            }).positive()
+            }).nonnegative()
         ),
         propinas: z.optional(
             z.number({
                 required_error: "Propinas is required",
                 invalid_type_error: "Propinas must be a number"
-            }).positive()
+            }).nonnegative()
         ),
         iva: z.optional(
             z.number({
                 required_error: "Iva is required",
                 invalid_type_error: "Iva must be a number"
-            }).positive()
+            }).nonnegative()
         ),
         hipoconsumo: z.optional(
             z.number({
                 required_error: "Hipoconsumo is required",
                 invalid_type_error: "Hipoconsumo must be a number"
-            }).positive()
+            }).nonnegative()
         ),
         tks: z.optional(
             z.number({
                 required_error: "Tks is required",
                 invalid_type_error: "Tks must be a number"
-            }).positive()
+            }).nonnegative()
         ),
         epayco: z.optional(
             z.number({
                 required_error: "Epayco is required",
                 invalid_type_error: "Epayco must be a number"
-            }).positive()
+            }).nonnegative()
         ),
         ventas_cafe: z.optional(
             z.number({
                 required_error: "Ventas cafe is required",
                 invalid_type_error: "Ventas cafe must be a number"
-            }).positive()
+            }).nonnegative()
         ),
         ventas_bar: z.optional(
             z.number({
                 required_error: "Ventas bar is required",
                 invalid_type_error: "Ventas bar must be a number"
-            }).positive()
+            }).nonnegative()
         ),
         ventas_mercado: z.optional(
             z.number({
                 required_error: "Ventas mercado is required",
                 invalid_type_error: "Ventas mercado must be a number"
-            }).positive()
+            }).nonnegative()
         ),
         gastos_caja_menor: z.optional(
             z.number({
                 required_error: "Gastos caja menor is required",
                 invalid_type_error: "Gastos caja menor must be a number"
-            }).positive()
+            }).nonnegative()
         ),
         fecha: z.string({
             required_error: "Fecha is required",
@@ -204,91 +204,91 @@ export const updateCuadroVentaSchema = z.object({
             z.number({
                 required_error: "Empresa id is required",
                 invalid_type_error: "Empresa id must be a number"
-            }).positive()
+            }).nonnegative()
         ),
         ventas_mañana: z.optional(
             z.number({
                 required_error: "Ventas mañana is required",
                 invalid_type_error: "Ventas mañana must be a number"
-            }).positive()
+            }).nonnegative()
         ),
         ventas_tarde: z.optional(
             z.number({
                 required_error: "Ventas tarde is required",
                 invalid_type_error: "Ventas tarde must be a number"
-            }).positive()
+            }).nonnegative()
         ),
         efectivo: z.optional(
             z.number({
                 required_error: "Efectivo is required",
                 invalid_type_error: "Efectivo must be a number"
-            }).positive()
+            }).nonnegative()
         ),
         datafono: z.optional(
             z.number({
                 required_error: "Datafono is required",
                 invalid_type_error: "Datafono must be a number"
-            }).positive()
+            }).nonnegative()
         ),
         transferencia: z.optional(
             z.number({
                 required_error: "Transferencia is required",
                 invalid_type_error: "Transferencia must be a number"
-            }).positive()
+            }).nonnegative()
         ),
         propinas: z.optional(
             z.number({
                 required_error: "Propinas is required",
                 invalid_type_error: "Propinas must be a number"
-            }).positive()
+            }).nonnegative()
         ),
         iva: z.optional(
             z.number({
                 required_error: "Iva is required",
                 invalid_type_error: "Iva must be a number"
-            }).positive()
+            }).nonnegative()
         ),
         hipoconsumo: z.optional(
             z.number({
                 required_error: "Hipoconsumo is required",
                 invalid_type_error: "Hipoconsumo must be a number"
-            }).positive()
+            }).nonnegative()
         ),
         tks: z.optional(
             z.number({
                 required_error: "Tks is required",
                 invalid_type_error: "Tks must be a number"
-            }).positive()
+            }).nonnegative()
         ),
         epayco: z.optional(
             z.number({
                 required_error: "Epayco is required",
                 invalid_type_error: "Epayco must be a number"
-            }).positive()
+            }).nonnegative()
         ),
         ventas_cafe: z.optional(
             z.number({
                 required_error: "Ventas cafe is required",
                 invalid_type_error: "Ventas cafe must be a number"
-            }).positive()
+            }).nonnegative()
         ),
         ventas_bar: z.optional(
             z.number({
                 required_error: "Ventas bar is required",
                 invalid_type_error: "Ventas bar must be a number"
-            }).positive()
+            }).nonnegative()
         ),
         ventas_mercado: z.optional(
             z.number({
                 required_error: "Ventas mercado is required",
                 invalid_type_error: "Ventas mercado must be a number"
-            }).positive()
+            }).nonnegative()
         ),
         gastos_caja_menor: z.optional(
             z.number({
                 required_error: "Gastos caja menor is required",
                 invalid_type_error: "Gastos caja menor must be a number"
-            }).positive()
+            }).nonnegative()
         ),
         fecha: z.optional(
             z.string({

@@ -6,9 +6,9 @@ export const createCuentaPendienteSchema = z.object({
             required_error: "Proyecto is required",
             invalid_type_error: "Proyecto must be a string"
         }).max(60),
-        nit: z.number({
+        nit: z.string({
             required_error: "Nit is required",
-            invalid_type_error: "Nit must be a number"
+            invalid_type_error: "Nit must be a string"
         }),
         proveedor: z.optional(
             z.string({
@@ -31,27 +31,27 @@ export const createCuentaPendienteSchema = z.object({
         estado: z.optional(
             z.string({
                 invalid_type_error: "Estado must be a string"
-            }).max(5),
+            }).max(20),
         ),
         inmediato: z.optional(
             z.number({
                 invalid_type_error: "Inmediato must be a number"
-            }).positive()
+            }).nonnegative()
         ),
         dias_30: z.optional(
             z.number({
                 invalid_type_error: "Dias 30 must be a number"
-            }).positive()
+            }).nonnegative()
         ),
         dias_60: z.optional(
             z.number({
                 invalid_type_error: "Dias 60 must be a number"
-            }).positive()
+            }).nonnegative()
         ),
         empresa_id: z.number({
             required_error: "Empresa id is required",
             invalid_type_error: "Empresa id must be a number"
-        }).positive(),
+        }).nonnegative(),
     }).strict(),
 });
 
@@ -69,8 +69,8 @@ export const updateCuentaPendienteSchema = z.object({
             }).max(60),
         ),
         nit: z.optional(
-            z.number({
-                invalid_type_error: "Nit must be a number"
+            z.string({
+                invalid_type_error: "Nit must be a string"
             })
         ),
         proveedor: z.optional(
@@ -96,27 +96,27 @@ export const updateCuentaPendienteSchema = z.object({
         estado: z.optional(
             z.string({
                 invalid_type_error: "Estado must be a string"
-            }).max(5),
+            }).max(20),
         ),
         inmediato: z.optional(
             z.number({
                 invalid_type_error: "Inmediato must be a number"
-            }).positive()
+            }).nonnegative()
         ),
         dias_30: z.optional(
             z.number({
                 invalid_type_error: "Dias 30 must be a number"
-            }).positive()
+            }).nonnegative()
         ),
         dias_60: z.optional(
             z.number({
                 invalid_type_error: "Dias 60 must be a number"
-            }).positive()
+            }).nonnegative()
         ),
         empresa_id: z.optional(
             z.number({
                 invalid_type_error: "Empresa id must be a number"
-            }).positive()
+            }).nonnegative()
         ),
     }).strict(),
 });

@@ -77,11 +77,11 @@ model cuenta {
 model cuenta_pendiente {
   id             Int      @id @default(autoincrement())
   proyecto       String   @db.VarChar(50)
-  nit            Int?
+  nit            String?  @db.VarChar(30)
   proveedor      String?  @db.VarChar(100)
   nfactura       String?  @db.VarChar(20)
   fecha_recibido DateTime @db.Date
-  estado         String?  @default("CXP") @db.VarChar(5)
+  estado         String?  @db.VarChar(20)
   inmediato      Int?     @default(0)
   dias_30        Int?     @default(0)
   dias_60        Int?     @default(0)
