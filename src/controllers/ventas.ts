@@ -80,7 +80,7 @@ export const create_venta = async (req: Request, res: Response, next: NextFuncti
                 fecha: new Date(fecha),
                 empresa_id: empresa_id,
                 cantidad: cantidad,
-                producto: producto,
+                producto: producto.toUpperCase(),
                 valor_total: valor_total
             },
         });
@@ -233,7 +233,8 @@ export const create_cuadro_venta = async (req: Request, res: Response, next: Nex
             ventas_cafe,
             ventas_bar,
             ventas_mercado,
-            gastos_caja_menor
+            gastos_caja_menor,
+            horas_reserva
         } = req.body;
 
         const empresa = await prisma.empresa.findUnique({
@@ -266,7 +267,8 @@ export const create_cuadro_venta = async (req: Request, res: Response, next: Nex
                 ventas_cafe: ventas_cafe,
                 ventas_bar: ventas_bar,
                 ventas_mercado: ventas_mercado,
-                gastos_caja_menor: gastos_caja_menor
+                gastos_caja_menor: gastos_caja_menor,
+                horas_reserva: horas_reserva
             },
         });
         res.status(201).json(cuadro_venta);
@@ -296,7 +298,8 @@ export const update_cuadro_venta = async (req: Request, res: Response, next: Nex
             ventas_cafe,
             ventas_bar,
             ventas_mercado,
-            gastos_caja_menor
+            gastos_caja_menor,
+            horas_reserva
         } = req.body;
 
         //Validates if cuadro ventas exists and if the user is authorized
@@ -307,7 +310,7 @@ export const update_cuadro_venta = async (req: Request, res: Response, next: Nex
             return next(createError('Unauthorized', 401));
         }
 
-        if(!empresa_id){
+        if(empresa_id){
             const empresa = await prisma.empresa.findUnique({
                 where: { id: +empresa_id },
             });
@@ -342,7 +345,8 @@ export const update_cuadro_venta = async (req: Request, res: Response, next: Nex
                 ventas_cafe: ventas_cafe || undefined,
                 ventas_bar: ventas_bar || undefined,
                 ventas_mercado: ventas_mercado || undefined,
-                gastos_caja_menor: gastos_caja_menor || undefined
+                gastos_caja_menor: gastos_caja_menor || undefined,
+                horas_reserva: horas_reserva || undefined
             },
         });
         res.status(200).json(updated_cuadro_venta);

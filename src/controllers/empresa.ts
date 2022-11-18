@@ -32,7 +32,7 @@ export const createEmpresa = async (req: Request, res: Response, next: NextFunct
         const { nombre } = req.body;
         const empresa = await prisma.empresa.create({
             data: {
-                nombre: nombre,
+                nombre: nombre.toUpperCase(),
             },
         });
         res.status(200).json(empresa);

@@ -188,7 +188,13 @@ export const createCuadroVentaSchema = z.object({
         fecha: z.string({
             required_error: "Fecha is required",
             invalid_type_error: "Fecha must be a string"
-        }).length(10)
+        }).length(10),
+        horas_reserva: z.optional(
+            z.number({
+                required_error: "Horas reserva is required",
+                invalid_type_error: "Horas reserva must be a number"
+            }).nonnegative()
+        ),
     }).strict(),
 });
 
@@ -295,7 +301,13 @@ export const updateCuadroVentaSchema = z.object({
                 required_error: "Fecha is required",
                 invalid_type_error: "Fecha must be a string"
             }).length(10)
-        )
+        ),
+        horas_reserva: z.optional(
+            z.number({
+                required_error: "Horas reserva is required",
+                invalid_type_error: "Horas reserva must be a number"
+            }).nonnegative()
+        ),
     }).strict(),
 });
 

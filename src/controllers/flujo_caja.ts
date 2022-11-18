@@ -223,7 +223,7 @@ export const create_categoria = async ( req: Request, res: Response, next: NextF
 
         const categoria = await prisma.categoria.create({
             data: {
-                descripcion: descripcion,
+                descripcion: descripcion.toUpperCase(),
                 efectivo: efectivo || undefined,
                 datafono: datafono || undefined,
                 transferencia: transferencia || undefined,
