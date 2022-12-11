@@ -3,6 +3,9 @@
 import { PrismaClient } from "@prisma/client";
 import { Request, Response, NextFunction } from "express";
 import { createError } from "../utils/errors";
+import { updateFlujoCajaSchema } from "../schemas/flujo_caja.schema";
+import { updateCategoriaSchema } from "../schemas/flujo_caja.schema";
+import zodToJsonSchema from "zod-to-json-schema";
 
 const prisma = new PrismaClient();
 
@@ -17,7 +20,10 @@ export const get_flujo_caja = async ( req: Request, res: Response, next: NextFun
         }
 
         if( req.user.isAdmin || req.user.empresas.includes( +flujo_caja.empresa_id ) ){
-            res.status( 200 ).json( flujo_caja );
+            res.status( 200 ).json( {
+                "data": flujo_caja,
+                "updatable": Object.keys(zodToJsonSchema(updateFlujoCajaSchema)['properties']['body']['properties'])
+            } );
         }else{
             next( createError( 'Unauthorized', 401 ) );
         }
@@ -164,7 +170,10 @@ export const get_categoria = async ( req: Request, res: Response, next: NextFunc
             where: { id: +categoria.flujo_caja_id },
         });
         if (req.user.isAdmin || req.user.empresas.includes( +flujo_caja.empresa_id )) {
-            res.status( 200 ).json( categoria );
+            res.status( 200 ).json({ 
+                "data": categoria,
+                "updatable": Object.keys(zodToJsonSchema(updateCategoriaSchema)['properties']['body']['properties'])
+            });
         }else{
             next( createError( 'Unauthorized', 401 ) );
         }

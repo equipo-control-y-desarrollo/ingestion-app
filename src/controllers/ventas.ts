@@ -2,6 +2,9 @@
 import { Response, Request, NextFunction } from 'express';
 import { PrismaClient } from '@prisma/client';
 import { createError } from '../utils/errors';
+import { updateVentaSchema } from '../schemas/ventas.schema';
+import { updateCuadroVentaSchema } from '../schemas/ventas.schema';
+import zodToJsonSchema from "zod-to-json-schema";
 
 const prisma = new PrismaClient();
 
@@ -26,7 +29,10 @@ export const get_venta = async (req: Request, res: Response, next: NextFunction)
         }
         //Validates user is admin or belongs to the empresa
         if(req.user.isAdmin || req.user.empresas.includes(+venta.empresa_id)){
-            res.status(200).json(venta);
+            res.status(200).json({
+                "data": venta,
+                "updatable": Object.keys(zodToJsonSchema(updateVentaSchema)['properties']['body']['properties'])
+            });
         }else{
             next(createError('Unauthorized', 401));
         }
@@ -185,7 +191,10 @@ export const get_cuadro_venta = async (req: Request, res: Response, next: NextFu
         }
 
         if(req.user.isAdmin || req.user.empresas.includes(+cuadro_venta.empresa_id)){
-            res.status(200).json(cuadro_venta);
+            res.status(200).json({
+                "data": cuadro_venta,
+                "updatable": Object.keys(zodToJsonSchema(updateCuadroVentaSchema)['properties']['body']['properties'])
+            });
         }else{
             next(createError('Unauthorized', 401));
         }

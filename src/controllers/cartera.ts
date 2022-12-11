@@ -3,6 +3,8 @@
 import {Request, Response, NextFunction} from 'express';
 import { PrismaClient } from '@prisma/client';
 import { createError } from '../utils/errors';
+import { updateCarteraSchema } from '../schemas/cartera.schema';
+import zodToJsonSchema from "zod-to-json-schema";
 
 const prisma = new PrismaClient();
 
@@ -18,7 +20,10 @@ export const get_cartera = async (req: Request, res: Response, next: NextFunctio
 
         //Validates user is admin or belongs to the empresa
         if(req.user.isAdmin || req.user.empresas.includes(+cartera.empresa_id)){ 
-            return res.status(200).json(cartera);
+            return res.status(200).json({
+                "data": cartera,
+                "updatable": zodToJsonSchema(updateCarteraSchema)
+            });
         }else{
             next(createError('Unauthorized', 401));
         }
@@ -34,6 +39,10 @@ export const get_carteras = async (req: Request, res: Response, next: NextFuncti
     } catch (error) {
         next(error);
     }
+}
+
+export const get_cartera_schema = async (req: Request, res: Response, next: NextFunction) => {
+    return res.status(200).json(zodToJsonSchema(updateCarteraSchema, "schema"));
 }
 
 export const get_carteras_by_empresa = async (req: Request, res: Response, next: NextFunction) => {

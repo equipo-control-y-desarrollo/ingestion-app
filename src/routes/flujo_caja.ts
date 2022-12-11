@@ -34,16 +34,16 @@ import {
 
 const router = Router();
 
-router.get("/empresa/:empresa_id", [validate(getFlujoCajaByEmpresaSchema), verifyEmpresa], get_flujo_caja_by_empresa);
-router.get("/:id", validate(getFlujoCajaSchema), get_flujo_caja);
-router.post("/", validate(createFlujoCajaSchema),create_flujo_caja);
-router.put("/:id", validate(updateFlujoCajaSchema),update_flujo_caja);
-router.delete("/:id", validate(deleteFlujoCajaSchema), delete_flujo_caja);
-
 router.get("/categorias/flujo/:flujo_caja_id", validate(getCategoriaByFlujoCajaSchema), get_categorias_by_flujo_caja);
 router.get("/categorias/:id", validate(getCategoriaSchema),get_categoria);
 router.post("/categorias", validate(createCategoriaSchema),create_categoria);
 router.put("/categorias/:id", validate(updateCategoriaSchema),update_categoria);
 router.delete("/categorias/:id", validate(deleteCategoriaSchema),delete_categoria);
+
+router.get("/empresa/:empresa_id", [validate(getFlujoCajaByEmpresaSchema), verifyEmpresa], get_flujo_caja_by_empresa);
+router.get("/:id", validate(getFlujoCajaSchema), get_flujo_caja);
+router.post("/", validate(createFlujoCajaSchema),create_flujo_caja);
+router.put("/:id", validate(updateFlujoCajaSchema),update_flujo_caja);
+router.delete("/:id", validate(deleteFlujoCajaSchema), delete_flujo_caja);
 
 export default router;

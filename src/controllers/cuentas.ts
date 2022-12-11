@@ -3,6 +3,8 @@
 import { Response, Request, NextFunction } from 'express';
 import { createError } from '../utils/errors';
 import { PrismaClient } from '@prisma/client';
+import { updateCuentaSchema } from '../schemas/cuentas.schema';
+import zodToJsonSchema from "zod-to-json-schema";
 
 const prisma = new PrismaClient();
 
@@ -28,7 +30,10 @@ export const get_cuenta = async (req: Request, res: Response, next: NextFunction
         }
 
         if(req.user.isAdmin || req.user.empresas.includes(+cuenta.empresa_id)){
-            res.status(200).json(cuenta);
+            res.status(200).json({
+                "data":cuenta,
+                "updatable": Object.keys(zodToJsonSchema(updateCuentaSchema)['properties']['body']['properties'])
+            });
         }else{
             next(createError('Unauthorized', 401));
         }

@@ -2,6 +2,8 @@
 import { PrismaClient } from "@prisma/client";
 import { Request, Response, NextFunction } from "express";
 import { createError } from "../utils/errors";
+import { updateCuentaPendienteSchema } from "../schemas/cuenta_pendiente.schema";
+import zodToJsonSchema from "zod-to-json-schema";
 
 const prisma = new PrismaClient();
 
@@ -46,7 +48,10 @@ export const get_cuenta_pendiente = async ( req: Request, res: Response, next: N
         }
 
         if ( req.user.isAdmin || req.user.empresas.includes( +cuenta_pendiente.empresa_id ) ) {
-            return res.status( 200 ).json( cuenta_pendiente );
+            return res.status( 200 ).json( {
+                "data": cuenta_pendiente,
+                "updatable": Object.keys(zodToJsonSchema( updateCuentaPendienteSchema )['properties']['body']['properties'])
+            });
         } else {
             next( createError( 'Unauthorized', 401 ) );
         }

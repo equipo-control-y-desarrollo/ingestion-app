@@ -1,7 +1,7 @@
 {
   "name": "ingestion_app",
   "version": "1.0.0",
-  "description": "Project backend for PayFast, the final project for Diseño de Software II made with Typescript, NodeJS and Express",
+  "description": "Project backend for PayFas with Typescript, NodeJS and Express",
   "main": "dist/app.js",
   "scripts": {
     "start": "./node_modules/typescript/bin/tsc && node dist/app.js",
@@ -28,6 +28,7 @@
     "helmet": "^6.0.0",
     "jsonwebtoken": "^8.5.1",
     "passport": "^0.6.0",
-    "zod": "^3.19.1"
+    "zod": "^3.19.1",
+    "zod-to-json-schema": "^3.19.3"
   }
 }

@@ -36,13 +36,7 @@ import {
 
 const router = Router();
 
-router.get("/empresa/:empresa_id", [validate(getVentaByEmpresaSchema), verifyEmpresa], get_ventas_by_empresa);
-router.get("/", verifyAdmin, get_ventas);
-router.get("/:id", validate(getVentaSchema),get_venta);
-router.post("/", validate(createVentaSchema), create_venta);
-router.put("/:id", validate(updateVentaSchema), update_venta);
-router.delete("/:id", validate(deleteVentaSchema), delete_venta);
-
+//Cuadros de ventas routes
 router.get(
   "/cuadros/empresa/:empresa_id",
   [validate(getCuadroVentaByEmpresaSchema), verifyEmpresa],
@@ -53,5 +47,13 @@ router.get("/cuadros/:id", validate(getCuadroVentaSchema),get_cuadro_venta);
 router.post("/cuadros/", validate(createCuadroVentaSchema), create_cuadro_venta);
 router.put("/cuadros/:id", validate(updateCuadroVentaSchema), update_cuadro_venta);
 router.delete("/cuadros/:id", validate(deleteCuadroVentaSchema), delete_cuadro_venta);
+
+//Ventas routes
+router.get("/empresa/:empresa_id", [validate(getVentaByEmpresaSchema), verifyEmpresa], get_ventas_by_empresa);
+router.get("/", verifyAdmin, get_ventas);
+router.get("/:id", validate(getVentaSchema),get_venta);
+router.post("/", validate(createVentaSchema), create_venta);
+router.put("/:id", validate(updateVentaSchema), update_venta);
+router.delete("/:id", validate(deleteVentaSchema), delete_venta);
 
 export default router;
