@@ -52,5 +52,5 @@ jobs:
         with:
           app-name: 'ingestion-powerapp'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_4875C5688D9F4CECAAD85E082601F23A }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_337B162DB376470A8B3BB964EB5C15B1 }}
           package: .
