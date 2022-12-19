@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { Console } from "console";
 import { Request, Response, NextFunction } from "express";
 
 const prisma = new PrismaClient();
@@ -68,3 +69,21 @@ export const deleteEmpresa = async (req: Request, res: Response, next: NextFunct
         next(error);
     }
 };
+
+export const getEmpresasUser = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        console.log(req.user.id)
+       const empresas = await prisma.empresa.findMany({
+        where: {
+          usuario: {
+            some: {
+                id: req.user.id
+            }
+        }
+      }
+    })
+    res.status(200).json(empresas)
+    } catch (error) {
+        next(error)
+    }
+}

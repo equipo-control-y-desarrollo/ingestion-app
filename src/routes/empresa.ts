@@ -6,7 +6,8 @@ import {
     getEmpresas,
     createEmpresa,
     updateEmpresa,
-    deleteEmpresa
+    deleteEmpresa,
+    getEmpresasUser
 
 } from '../controllers/empresa'
 import {
@@ -22,6 +23,7 @@ const prisma = new PrismaClient()
 const router = Router()
 
 router.get('/', getEmpresas)
+router.get('/user', getEmpresasUser)
 router.get('/:id', validate(getEmpresaSchema), getEmpresa)
 router.post('/', validate(createEmpresaSchema), createEmpresa)
 router.put('/:id', validate(updateEmpresaSchema), updateEmpresa)
