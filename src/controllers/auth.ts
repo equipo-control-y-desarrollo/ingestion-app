@@ -65,7 +65,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
             isAdmin: usuario.isAdmin,
             empresas: usuario.empresas.map((empresa) => empresa.id),
         });
-        res.cookie('token', token, { httpOnly: true }).status(200).json(usuario);
+        res.cookie('token', token, { httpOnly: true, sameSite: 'none' }).status(200).json(usuario);
     } catch (error) {
         next(error);
     }
