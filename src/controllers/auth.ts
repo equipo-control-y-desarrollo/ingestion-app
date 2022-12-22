@@ -80,7 +80,7 @@ export const login = async (
         secure: true,
       })
       .status(200)
-      .json(usuario);
+      .json({usuario: usuario, token: token});
   } catch (error) {
     next(error);
   }
