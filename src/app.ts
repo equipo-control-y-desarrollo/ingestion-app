@@ -21,7 +21,7 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-    origin: ["http://190.84.119.71"],
+    origin: true,
     credentials: true
 }));
 
