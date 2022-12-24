@@ -34,11 +34,11 @@ app.use('/auth',authRouter);
 //Token verification for routes
 app.use(verifyToken);
 
-app.use('/empresa', verifyAdmin,empresaRouter);
-app.use('/cartera',carteraRouter);
-app.use('/cuenta_pendiente',cuentaPendienteRouter);
+app.use('/empresas', verifyAdmin,empresaRouter);
+app.use('/carteras',carteraRouter);
+app.use('/cuentas_pendientes',cuentaPendienteRouter);
 app.use('/cuentas',cuentasRouter);
-app.use('/flujocaja',flujoCajaRouter);
+app.use('/flujoscaja',flujoCajaRouter);
 app.use('/ventas',ventasRouter);
 
 // Error handler
