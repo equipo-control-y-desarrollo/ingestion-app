@@ -12,6 +12,8 @@ import {
   get_movimiento,
   update_movimiento,
   delete_movimiento,
+  get_cuenta_schema,
+  get_movimiento_schema,
 } from "../controllers/cuentas";
 
 import { verifyAdmin, verifyEmpresa } from "../utils/jwt";
@@ -35,6 +37,7 @@ const router = Router();
 //Cuentas bancarias router
 router.get("/empresa/:empresa_id", [validate(getCuentaByEmpresaSchema), verifyEmpresa], get_cuentas_by_empresa);
 router.get("/", verifyAdmin, get_cuentas);
+router.get("/schema", get_cuenta_schema);
 router.get("/:id", validate(getCuentaSchema), get_cuenta);
 router.post("/", validate(createCuentaSchema), create_cuenta);
 router.put("/:id", validate(updateCuentaSchema), update_cuenta);
@@ -42,6 +45,7 @@ router.delete("/:id", validate(deleteCuentaSchema), delete_cuenta);
 
 //Movimientos bancarios router
 router.get("/movimientos/cuenta/:cuenta_id", validate(getMovimientoByCuentaSchema), get_movimientos_by_cuenta);
+router.get("/movimientos/schema", get_movimiento_schema);
 router.get("/movimientos/:id", validate(getMovimientoSchema), get_movimiento);
 router.post("/movimientos", validate(createMovimientoSchema), create_movimiento);
 router.put("/movimientos/:id", validate(updateMovimientoSchema), update_movimiento);

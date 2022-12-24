@@ -8,6 +8,7 @@ import {
   get_cuentas_pendientes_by_empresa,
   update_cuenta_pendiente,
   delete_cuenta_pendiente,
+  get_cuenta_pendiente_schema,
 } from "../controllers/cuenta_pendiente";
 
 import { verifyAdmin, verifyEmpresa } from "../utils/jwt";
@@ -18,7 +19,7 @@ import {
   updateCuentaPendienteSchema,
   deleteCuentaPendienteSchema,
   getCuentaPendienteSchema,
-  getCuentaPendienteByEmpresaSchema
+  getCuentaPendienteByEmpresaSchema,
 } from "../schemas/cuenta_pendiente.schema";
 
 const router = Router();
@@ -29,6 +30,7 @@ router.get(
   get_cuentas_pendientes_by_empresa
 );
 router.get("/", verifyAdmin, get_cuentas_pendientes);
+router.get("/schema", get_cuenta_pendiente_schema);
 router.get("/:id", validate(getCuentaPendienteSchema), get_cuenta_pendiente);
 router.post("/", validate(createCuentaPendienteSchema), create_cuenta_pendiente);
 router.put("/:id", validate(updateCuentaPendienteSchema),update_cuenta_pendiente);

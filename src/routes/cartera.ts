@@ -5,6 +5,7 @@ import {
     get_carteras,
     get_carteras_by_empresa,
     update_cartera,
+    get_cartera_schema,
     delete_cartera,
 } from "../controllers/cartera";
 
@@ -24,6 +25,7 @@ const router = Router();
 
 router.get('/empresa/:empresa_id', [validate(getCarteraByEmpresa), verifyEmpresa], get_carteras_by_empresa);
 router.get('/', verifyAdmin, get_carteras);
+router.get('/schema', get_cartera_schema);
 router.get('/:id', validate(getCarteraSchema) ,get_cartera);
 router.post('/', validate(createCarteraSchema), create_cartera);
 router.put('/:id', validate(updateCarteraSchema), update_cartera);
