@@ -5,7 +5,7 @@ export const createFlujoCajaSchema = z.object({
         fecha: z.string({
             required_error: "Fecha is required",
             invalid_type_error: "Fecha must be a string"
-        }).length(10),
+        }),
         empresa_id: z.number({
             required_error: "Empresa id is required",
             invalid_type_error: "Empresa id must be a number"
@@ -28,7 +28,7 @@ export const updateFlujoCajaSchema = z.object({
         fecha: z.optional(
             z.string({
                 invalid_type_error: "Fecha must be a string"
-            }).length(10)
+            })
         ),
         empresa_id: z.optional(
             z.number({

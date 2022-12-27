@@ -63,9 +63,7 @@ export const get_cartera_schema = async (
   return res
     .status(200)
     .json(
-      Object.keys(
         zodToJsonSchema(createCarteraSchema)["properties"]["body"]["properties"]
-      )
     );
 };
 
