@@ -22,6 +22,9 @@ export const get_flujo_caja = async (
     const { id } = req.params;
     const flujo_caja = await prisma.flujo_caja.findUnique({
       where: { id: +id },
+      include:{
+        categoria: true
+      }
     });
     if (!flujo_caja) {
       return next(createError("Flujo caja not found", 404));

@@ -36,6 +36,9 @@ export const get_cuenta = async (
     const { id } = req.params;
     const cuenta = await prisma.cuenta.findUnique({
       where: { id: +id },
+      include: {
+        movimiento: true
+      }
     });
     if (!cuenta) {
       return next(createError("Cuenta not found", 404));
