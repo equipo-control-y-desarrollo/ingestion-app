@@ -34,7 +34,7 @@ app.use('/auth',authRouter);
 //Token verification for routes
 app.use(verifyToken);
 
-app.use('/empresas', verifyAdmin,empresaRouter);
+app.use('/empresas',empresaRouter);
 app.use('/carteras',carteraRouter);
 app.use('/cuentas_pendientes',cuentaPendienteRouter);
 app.use('/cuentas',cuentasRouter);
