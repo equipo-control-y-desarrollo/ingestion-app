@@ -14,6 +14,6 @@ import { validate } from '../utils/validation';
 const router = Router();
 
 router.post('/login', validate(loginSchema),login);
-router.post('/signup', [validate(signupSchema), verifyAdmin],signup);
+router.post('/signup', validate(signupSchema),signup);
 
 export default router;
