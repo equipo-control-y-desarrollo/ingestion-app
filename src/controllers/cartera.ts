@@ -2,6 +2,7 @@
 import { Request, Response, NextFunction } from "express";
 import { PrismaClient } from "@prisma/client";
 import { createError } from "../utils/errors";
+import { exportData } from "../utils/export";
 import {
   updateCarteraSchema,
   createCarteraSchema,
@@ -65,6 +66,46 @@ export const get_cartera_schema = async (
     .json(
         zodToJsonSchema(createCarteraSchema)["properties"]["body"]["properties"]
     );
+};
+
+export const get_export_cartera = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const empresa_id = req.params.empresa_id;
+
+  const empresa = await prisma.empresa.findUnique({
+    where: { id: +empresa_id },
+  });
+  if (!empresa) {
+    return next(createError("Empresa not found", 404));
+  }
+
+  const cuentas = await prisma.cartera.findMany({
+    where: {
+      empresa_id: +empresa_id,
+    },
+  });
+  try {
+    const workbook = exportData(cuentas);
+
+    if (workbook == null) {
+      return next(createError("Empresa without data", 404))
+    }
+
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+    res.setHeader(
+      "Content-Disposition",
+      "attachment; filename=" + "export.xlsx"
+    );
+    workbook.xlsx.write(res);
+  } catch (err) {
+    next(err)
+  }
 };
 
 export const get_carteras_by_empresa = async (

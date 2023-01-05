@@ -6,6 +6,7 @@ import {
     get_carteras_by_empresa,
     update_cartera,
     get_cartera_schema,
+    get_export_cartera,
     delete_cartera,
 } from "../controllers/cartera";
 
@@ -23,6 +24,7 @@ import { Router } from 'express';
 
 const router = Router();
 
+router.get('export/:empresa_id', get_export_cartera)
 router.get('/empresa/:empresa_id', [validate(getCarteraByEmpresa), verifyEmpresa], get_carteras_by_empresa);
 router.get('/', verifyAdmin, get_carteras);
 router.get('/schema', get_cartera_schema);
