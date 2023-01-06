@@ -297,7 +297,7 @@ export const get_export_categorias = async (
 ) => {
   const flujo_caja_id = req.params.flujo_caja_id;
 
-  const flujo_caja = await prisma.empresa.findUnique({
+  const flujo_caja = await prisma.flujo_caja.findUnique({
     where: { id: +flujo_caja_id },
   });
   if (!flujo_caja) {
@@ -306,7 +306,7 @@ export const get_export_categorias = async (
 
   const categorias = await prisma.categoria.findMany({
     where: {
-      flujo_caja_id: flujo_caja_id,
+      flujo_caja_id: +flujo_caja_id,
     },
   });
   try {
