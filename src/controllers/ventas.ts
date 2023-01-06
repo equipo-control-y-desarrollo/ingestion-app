@@ -2,6 +2,7 @@
 import { Response, Request, NextFunction } from "express";
 import { PrismaClient } from "@prisma/client";
 import { createError } from "../utils/errors";
+import { exportData } from "../utils/export";
 import {
   updateCuadroVentaSchema,
   createCuadroVentaSchema,
@@ -89,6 +90,46 @@ export const get_ventas_by_empresa = async (
     res.status(200).json(ventas);
   } catch (error) {
     next(error);
+  }
+};
+
+export const get_export_ventas = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const empresa_id = req.params.empresa_id;
+
+  const empresa = await prisma.empresa.findUnique({
+    where: { id: +empresa_id },
+  });
+  if (!empresa) {
+    return next(createError("Empresa not found", 404));
+  }
+
+  const ventas = await prisma.registro_ventas.findMany({
+    where: {
+      empresa_id: +empresa_id,
+    },
+  });
+  try {
+    const workbook = exportData(ventas);
+
+    if (workbook == null) {
+      return next(createError("Empresa without data", 404))
+    }
+
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+    res.setHeader(
+      "Content-Disposition",
+      "attachment; filename=" + "export.xlsx"
+    );
+    workbook.xlsx.write(res);
+  } catch (err) {
+    next(err)
   }
 };
 
@@ -286,6 +327,46 @@ export const get_cuadros_ventas_by_empresa = async (
     res.status(200).json(cuadro_ventas);
   } catch (error) {
     next(error);
+  }
+};
+
+export const get_export_cuadro_ventas = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const empresa_id = req.params.empresa_id;
+
+  const empresa = await prisma.empresa.findUnique({
+    where: { id: +empresa_id },
+  });
+  if (!empresa) {
+    return next(createError("Empresa not found", 404));
+  }
+
+  const cuadro_ventas = await prisma.cuadro_ventas.findMany({
+    where: {
+      empresa_id: +empresa_id,
+    },
+  });
+  try {
+    const workbook = exportData(cuadro_ventas);
+
+    if (workbook == null) {
+      return next(createError("Empresa without data", 404))
+    }
+
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+    res.setHeader(
+      "Content-Disposition",
+      "attachment; filename=" + "export.xlsx"
+    );
+    workbook.xlsx.write(res);
+  } catch (err) {
+    next(err)
   }
 };
 

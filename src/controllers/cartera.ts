@@ -64,7 +64,7 @@ export const get_cartera_schema = async (
   return res
     .status(200)
     .json(
-        zodToJsonSchema(createCarteraSchema)["properties"]["body"]["properties"]
+      zodToJsonSchema(createCarteraSchema)["properties"]["body"]["properties"]
     );
 };
 
@@ -91,7 +91,7 @@ export const get_export_cartera = async (
     const workbook = exportData(cuentas);
 
     if (workbook == null) {
-      return next(createError("Empresa without data", 404))
+      return next(createError("Empresa without data", 404));
     }
 
     res.setHeader(
@@ -104,7 +104,7 @@ export const get_export_cartera = async (
     );
     workbook.xlsx.write(res);
   } catch (err) {
-    next(err)
+    next(err);
   }
 };
 

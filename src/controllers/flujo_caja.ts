@@ -3,6 +3,7 @@
 import { PrismaClient } from "@prisma/client";
 import { Request, Response, NextFunction } from "express";
 import { createError } from "../utils/errors";
+import { exportData } from "../utils/export";
 import {
   updateFlujoCajaSchema,
   createFlujoCajaSchema,
@@ -286,6 +287,46 @@ export const get_categorias_by_flujo_caja = async (
     res.status(200).json(categorias);
   } catch (error) {
     next(error);
+  }
+};
+
+export const get_export_categorias = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const flujo_caja_id = req.params.flujo_caja_id;
+
+  const flujo_caja = await prisma.empresa.findUnique({
+    where: { id: +flujo_caja_id },
+  });
+  if (!flujo_caja) {
+    return next(createError("Flujo Caja not found", 404));
+  }
+
+  const categorias = await prisma.categoria.findMany({
+    where: {
+      flujo_caja_id: flujo_caja_id,
+    },
+  });
+  try {
+    const workbook = exportData(categorias);
+
+    if (workbook == null) {
+      return next(createError("Empresa without data", 404))
+    }
+
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+    res.setHeader(
+      "Content-Disposition",
+      "attachment; filename=" + "export.xlsx"
+    );
+    workbook.xlsx.write(res);
+  } catch (err) {
+    next(err)
   }
 };
 

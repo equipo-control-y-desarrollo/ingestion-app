@@ -3,6 +3,7 @@
 import { Response, Request, NextFunction } from "express";
 import { createError } from "../utils/errors";
 import { PrismaClient } from "@prisma/client";
+import { exportData } from "../utils/export";
 import {
   updateCuentaSchema,
   createCuentaSchema,
@@ -275,6 +276,47 @@ export const get_movimiento_schema = async (
       )
     );
 };
+
+export const get_export_movimientos = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const cuenta_id = req.params.cuenta_id;
+
+  const cuenta = await prisma.cuenta.findUnique({
+    where: { id: +cuenta_id },
+  });
+  if (!cuenta) {
+    return next(createError("Cuenta not found", 404));
+  }
+
+  const movimientos = await prisma.movimiento.findMany({
+    where: {
+      cuenta_id: +cuenta_id,
+    },
+  });
+  try {
+    const workbook = exportData(movimientos);
+
+    if (workbook == null) {
+      return next(createError("Cuenta without data", 404))
+    }
+
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+    res.setHeader(
+      "Content-Disposition",
+      "attachment; filename=" + "export.xlsx"
+    );
+    workbook.xlsx.write(res);
+  } catch (err) {
+    next(err)
+  }
+};
+
 export const create_movimiento = async (
   req: Request,
   res: Response,

@@ -1,6 +1,7 @@
 //Cuentas pendientes
 
 import { Router } from "express";
+const fileUpload = require('express-fileupload');
 import {
   get_cuentas_pendientes,
   create_cuenta_pendiente,
