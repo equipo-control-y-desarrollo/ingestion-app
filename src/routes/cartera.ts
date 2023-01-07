@@ -24,7 +24,7 @@ import { Router } from 'express';
 
 const router = Router();
 
-router.get('export/:empresa_id', get_export_cartera)
+router.get('/export/:empresa_id', get_export_cartera)
 router.get('/empresa/:empresa_id', [validate(getCarteraByEmpresa), verifyEmpresa], get_carteras_by_empresa);
 router.get('/', verifyAdmin, get_carteras);
 router.get('/schema', get_cartera_schema);
