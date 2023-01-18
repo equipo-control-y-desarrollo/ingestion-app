@@ -10,6 +10,7 @@ import cuentasRouter from './routes/cuentas';
 import flujoCajaRouter from './routes/flujo_caja';
 import ventasRouter from './routes/ventas';
 import authRouter from './routes/auth';
+import gastoRouter from './routes/gasto';
 
 import { verifyAdmin } from './utils/jwt' 
 
@@ -40,6 +41,7 @@ app.use('/cuentas_pendientes',cuentaPendienteRouter);
 app.use('/cuentas',cuentasRouter);
 app.use('/flujoscaja',flujoCajaRouter);
 app.use('/ventas',ventasRouter);
+app.use('/gastos',gastoRouter);
 
 // Error handler
 app.use(handleError);
