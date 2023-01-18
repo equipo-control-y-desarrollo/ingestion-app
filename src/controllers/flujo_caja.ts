@@ -83,6 +83,9 @@ export const get_flujo_caja_by_empresa = async (
 
     const flujo_caja = await prisma.flujo_caja.findMany({
       where: { empresa_id: +empresa_id },
+      orderBy:{
+        fecha: 'desc'
+      }
     });
     res.status(200).json(flujo_caja);
   } catch (error) {

@@ -86,6 +86,9 @@ export const get_ventas_by_empresa = async (
 
     const ventas = await prisma.registro_ventas.findMany({
       where: { empresa_id: +empresa_id },
+      orderBy:{
+        fecha: 'desc'
+      }
     });
     res.status(200).json(ventas);
   } catch (error) {
@@ -111,6 +114,9 @@ export const get_export_ventas = async (
     where: {
       empresa_id: +empresa_id,
     },
+    orderBy:{
+      fecha: 'desc'
+    }
   });
   try {
     const workbook = exportData(ventas);
@@ -323,6 +329,9 @@ export const get_cuadros_ventas_by_empresa = async (
 
     const cuadro_ventas = await prisma.cuadro_ventas.findMany({
       where: { empresa_id: +empresa_id },
+      orderBy:{
+        fecha: 'desc'
+      }
     });
     res.status(200).json(cuadro_ventas);
   } catch (error) {
@@ -348,6 +357,9 @@ export const get_export_cuadro_ventas = async (
     where: {
       empresa_id: +empresa_id,
     },
+    orderBy:{
+      fecha: 'desc'
+    }
   });
   try {
     const workbook = exportData(cuadro_ventas);

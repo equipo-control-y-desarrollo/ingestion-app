@@ -79,6 +79,9 @@ export const get_gastos_by_empresa = async (
         
             const gastos = await prisma.gasto.findMany({
               where: { empresa_id: +empresa_id },
+              orderBy:{
+                fecha: 'desc'
+              }
             });
             res.json(gastos);
           } catch (error) {
@@ -106,6 +109,9 @@ export const get_export_gasto = async (
       where: {
         empresa_id: +empresa_id,
       },
+      orderBy:{
+        fecha: 'desc'
+      }
     });
     try {
       const workbook = exportData(gasto);

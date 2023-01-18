@@ -145,6 +145,9 @@ export const get_cuentas_pendientes_by_empresa = async (
 
     const cuentas_pendientes = await prisma.cuenta_pendiente.findMany({
       where: { empresa_id: +empresa_id },
+      orderBy:{
+        fecha_recibido: 'desc'
+      }
     });
     res.json(cuentas_pendientes);
   } catch (error) {

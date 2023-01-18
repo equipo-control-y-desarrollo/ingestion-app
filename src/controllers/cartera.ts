@@ -86,6 +86,9 @@ export const get_export_cartera = async (
     where: {
       empresa_id: +empresa_id,
     },
+    orderBy:{
+      fecha_factura: 'desc'
+    }
   });
   try {
     const workbook = exportData(cuentas);
@@ -124,6 +127,9 @@ export const get_carteras_by_empresa = async (
 
     const carteras = await prisma.cartera.findMany({
       where: { empresa_id: +empresa_id },
+      orderBy:{
+        fecha_factura: 'desc'
+      }
     });
     res.status(200).json(carteras);
   } catch (error) {

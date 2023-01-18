@@ -254,6 +254,9 @@ export const get_movimientos_by_cuenta = async (
 
     const movimientos = await prisma.movimiento.findMany({
       where: { cuenta_id: +cuenta_id },
+      orderBy:{
+        fecha: 'desc'
+      }
     });
     res.status(200).json(movimientos);
   } catch (error) {
@@ -295,6 +298,9 @@ export const get_export_movimientos = async (
     where: {
       cuenta_id: +cuenta_id,
     },
+    orderBy:{
+      fecha: 'desc'
+    }
   });
   try {
     const workbook = exportData(movimientos);
