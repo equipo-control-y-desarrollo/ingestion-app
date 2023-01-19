@@ -20,6 +20,7 @@ model cartera {
   proyecto          String?  @db.VarChar(20)
   dias_vencido      Int?
   empresa_id        Int
+  cliente           String?  @db.VarChar(20)
   empresa           empresa  @relation(fields: [empresa_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "cartera_ibfk_1")
 
   @@index([empresa_id], map: "empresa_id")

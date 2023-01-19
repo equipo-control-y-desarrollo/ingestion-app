@@ -6,6 +6,11 @@ export const createCarteraSchema = z.object({
             required_error: "Valor is required",
             invalid_type_error: "Valor must be a number"
         }).nonnegative(),
+        cliente: z.optional(
+            z.string({
+                invalid_type_error: "Cliente must be a string"
+            }).max(20)
+        ),
         valor_abonado: z.number({
             required_error: "Valor abonado is required",
             invalid_type_error: "Valor abonado must be a number"
@@ -52,6 +57,11 @@ export const updateCarteraSchema = z.object({
                 required_error: "Valor is required",
                 invalid_type_error: "Valor must be a number"
             }).nonnegative(),
+        ),
+        cliente: z.optional(
+            z.string({
+                invalid_type_error: "Cliente must be a string"
+            }).max(20)
         ),
         valor_abonado: z.optional(
             z.number({

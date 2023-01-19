@@ -86,9 +86,9 @@ export const get_export_cartera = async (
     where: {
       empresa_id: +empresa_id,
     },
-    orderBy:{
-      fecha_factura: 'desc'
-    }
+    orderBy: {
+      fecha_factura: "desc",
+    },
   });
   try {
     const workbook = exportData(cuentas);
@@ -127,9 +127,9 @@ export const get_carteras_by_empresa = async (
 
     const carteras = await prisma.cartera.findMany({
       where: { empresa_id: +empresa_id },
-      orderBy:{
-        fecha_factura: 'desc'
-      }
+      orderBy: {
+        fecha_factura: "desc",
+      },
     });
     res.status(200).json(carteras);
   } catch (error) {
@@ -145,6 +145,7 @@ export const create_cartera = async (
   try {
     const {
       valor,
+      cliente,
       valor_abonado,
       fecha_factura,
       fecha_vencimiento,
@@ -170,6 +171,7 @@ export const create_cartera = async (
       data: {
         empresa_id: empresa_id,
         valor: valor,
+        cliente: cliente || undefined,
         valor_abonado: valor_abonado || undefined,
         fecha_factura: new Date(fecha_factura),
         fecha_vencimiento: new Date(fecha_vencimiento),
@@ -197,6 +199,7 @@ export const update_cartera = async (
       fecha_factura,
       fecha_vencimiento,
       estado,
+      cliente,
       nro_factura,
       proyecto,
       empresa_id,
@@ -219,6 +222,10 @@ export const update_cartera = async (
     let cartera = await prisma.cartera.findUnique({
       where: { id: +id },
     });
+    if (!cartera) {
+      return next(createError("Cartera not found", 404));
+    }
+
     if (!req.user.isAdmin && !req.user.empresas.includes(+cartera.empresa_id)) {
       next(createError("Unauthorized", 401));
     }
@@ -235,6 +242,7 @@ export const update_cartera = async (
       data: {
         empresa_id: empresa_id || undefined,
         valor: valor || undefined,
+        cliente: cliente || undefined,
         valor_abonado: valor_abonado || undefined,
         fecha_factura: new_fecha_factura,
         fecha_vencimiento: new_fecha_vencimiento,
@@ -261,6 +269,11 @@ export const delete_cartera = async (
     let cartera = await prisma.cartera.findUnique({
       where: { id: +id },
     });
+
+    if (!cartera) {
+      return next(createError("Cartera not found", 404));
+    }
+
     if (!req.user.isAdmin && !req.user.empresas.includes(+cartera.empresa_id)) {
       next(createError("Unauthorized", 401));
     }
