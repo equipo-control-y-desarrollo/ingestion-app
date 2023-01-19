@@ -9,7 +9,7 @@ export const createCarteraSchema = z.object({
         cliente: z.optional(
             z.string({
                 invalid_type_error: "Cliente must be a string"
-            }).max(20)
+            }).max(40)
         ),
         valor_abonado: z.number({
             required_error: "Valor abonado is required",
@@ -31,11 +31,11 @@ export const createCarteraSchema = z.object({
         nro_factura: z.string({
             required_error: "Nro factura is required",
             invalid_type_error: "Nro factura must be a string"
-        }).min(5).max(20),
+        }).max(20),
         proyecto: z.optional(
             z.string({
                 invalid_type_error: "Proyecto must be a string"
-            }).min(5).max(20)
+            }).max(40)
         ),
         empresa_id: z.number({
             required_error: "Empresa id is required",
@@ -61,7 +61,7 @@ export const updateCarteraSchema = z.object({
         cliente: z.optional(
             z.string({
                 invalid_type_error: "Cliente must be a string"
-            }).max(20)
+            }).max(40)
         ),
         valor_abonado: z.optional(
             z.number({
@@ -90,12 +90,12 @@ export const updateCarteraSchema = z.object({
             z.string({
                 required_error: "Nro factura is required",
                 invalid_type_error: "Nro factura must be a string"
-            }).min(5).max(20)
+            }).max(20)
         ),
         proyecto: z.optional(
             z.string({
                 invalid_type_error: "Proyecto must be a string"
-            }).min(5).max(20)
+            }).max(40)
         ),
         empresa_id: z.optional(
             z.number({
