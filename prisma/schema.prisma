@@ -11,16 +11,16 @@ datasource db {
 model cartera {
   id                Int      @id @default(autoincrement())
   valor             Int?
-  valor_abonado     Int?
+  valor_abonado     Int?     @default(0)
   valor_total       Int?
   fecha_factura     DateTime @db.Date
   fecha_vencimiento DateTime @db.Date
   estado            Boolean? @default(false)
   nro_factura       String   @db.VarChar(20)
-  proyecto          String?  @db.VarChar(20)
+  proyecto          String?  @db.VarChar(40)
   dias_vencido      Int?
   empresa_id        Int
-  cliente           String?  @db.VarChar(20)
+  cliente           String?  @db.VarChar(40)
   empresa           empresa  @relation(fields: [empresa_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "cartera_ibfk_1")
 
   @@index([empresa_id], map: "empresa_id")
@@ -93,6 +93,7 @@ model cuenta_pendiente {
   total          Int?
   fecha_vencida  DateTime @db.Date
   empresa_id     Int
+  clasificacion  String   @db.VarChar(30)
 
   @@index([empresa_id], map: "empresa_id")
 }

@@ -184,6 +184,7 @@ export const create_cuenta_pendiente = async (
       dias_60,
       fecha_vencida,
       empresa_id,
+      clasificacion
     } = req.body;
 
     const empresa = await prisma.empresa.findUnique({
@@ -205,6 +206,7 @@ export const create_cuenta_pendiente = async (
         proveedor: proveedor,
         nfactura: nfactura,
         fecha_recibido: new Date(fecha_recibido),
+        clasificacion: clasificacion,
         estado: estado || undefined,
         inmediato: inmediato || undefined,
         dias_30: dias_30 || undefined,
@@ -265,6 +267,7 @@ export const update_cuenta_pendiente = async (
       dias_60,
       fecha_vencida,
       empresa_id,
+      clasificacion
     } = req.body;
 
     //Validates if cuenta_pendiente is in usuario's empresas
@@ -308,6 +311,7 @@ export const update_cuenta_pendiente = async (
         nit: nit || undefined,
         proveedor: proveedor || undefined,
         nfactura: nfactura || undefined,
+        clasificacion: clasificacion || undefined,
         fecha_recibido: new_fecha_recibido,
         estado: estado || undefined,
         inmediato: inmediato || undefined,
