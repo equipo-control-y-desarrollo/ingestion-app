@@ -93,7 +93,7 @@ export const createMovimientoSchema = z.object({
         saldo_inicial: z.number({
             required_error: "Saldo_inicial is required",
             invalid_type_error: "Saldo_inicial must be a number"
-        }).nonnegative(),
+        }),
         ingreso: z.optional(
             z.number({
                 invalid_type_error: "Ingreso must be a number"
@@ -138,7 +138,7 @@ export const updateMovimientoSchema = z.object({
         saldo_inicial: z.optional(
             z.number({
                 invalid_type_error: "Saldo_inicial must be a number"
-            }).nonnegative()
+            })
         ),
         ingreso: z.optional(
             z.number({
