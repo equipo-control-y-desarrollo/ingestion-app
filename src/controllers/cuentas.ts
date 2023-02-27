@@ -91,7 +91,7 @@ export const create_cuenta = async (
   next: NextFunction
 ) => {
   try {
-    const { banco, tipo, numero, empresa_id } = req.body;
+    const { banco, tipo, numero, empresa_id, nombre } = req.body;
 
     const empresa = await prisma.empresa.findUnique({
       where: { id: +empresa_id },
@@ -106,6 +106,7 @@ export const create_cuenta = async (
     const cuenta = await prisma.cuenta.create({
       data: {
         banco: banco,
+        nombre: nombre,
         tipo: tipo,
         numero: numero,
         empresa_id: empresa_id,
@@ -136,7 +137,7 @@ export const update_cuenta = async (
 ) => {
   try {
     const { id } = req.params;
-    const { banco, tipo, numero, empresa_id } = req.body;
+    const { banco, tipo, numero, empresa_id, nombre } = req.body;
 
     const cuenta = await prisma.cuenta.findUnique({
       where: { id: +id },
@@ -161,6 +162,7 @@ export const update_cuenta = async (
       where: { id: +id },
       data: {
         banco: banco || undefined,
+        nombre: nombre || undefined,
         tipo: tipo || undefined,
         numero: numero || undefined,
         empresa_id: empresa_id || undefined,

@@ -18,6 +18,11 @@ export const createCuentaSchema = z.object({
             required_error: "Numero is required",
             invalid_type_error: "Numero must be a string"
         }).max(20),
+        nombre: z.optional(
+            z.string({
+                invalid_type_error: "Nombre must be a string"
+            }).max(20)
+        )
     }).strict(),
 });
 
@@ -49,6 +54,11 @@ export const updateCuentaSchema = z.object({
                 invalid_type_error: "Numero must be a string"
             }).max(20)
         ),
+        nombre: z.optional(
+            z.string({
+                invalid_type_error: "Nombre must be a string"
+            }).max(20)
+        )
     }).strict(),
 });
 

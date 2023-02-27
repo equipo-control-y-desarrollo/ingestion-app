@@ -74,6 +74,7 @@ model cuenta {
   empresa_id Int
   numero     String       @db.VarChar(20)
   tipo       cuenta_tipo
+  nombre     String?      @db.VarChar(20)
   movimiento movimiento[]
 
   @@index([empresa_id], map: "empresa_id")
