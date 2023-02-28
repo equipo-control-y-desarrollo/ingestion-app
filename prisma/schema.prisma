@@ -56,7 +56,7 @@ model cuadro_ventas {
   venta_neta        Float?   @db.Float
   tks               Int
   tks_promedio      Float?   @db.Float
-  epayco            Float?   @default(0) @db.Float
+  rappi             Float?   @default(0) @db.Float
   ventas_cafe       Float?   @default(0) @db.Float
   ventas_bar        Float?   @default(0) @db.Float
   ventas_mercado    Float?   @default(0) @db.Float

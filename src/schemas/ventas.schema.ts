@@ -155,10 +155,10 @@ export const createCuadroVentaSchema = z.object({
                 invalid_type_error: "Tks must be a number"
             }).nonnegative()
         ),
-        epayco: z.optional(
+        rappi: z.optional(
             z.number({
-                required_error: "Epayco is required",
-                invalid_type_error: "Epayco must be a number"
+                required_error: "rappi is required",
+                invalid_type_error: "rappi must be a number"
             }).nonnegative()
         ),
         ventas_cafe: z.optional(
@@ -266,10 +266,10 @@ export const updateCuadroVentaSchema = z.object({
                 invalid_type_error: "Tks must be a number"
             }).nonnegative()
         ),
-        epayco: z.optional(
+        rappi: z.optional(
             z.number({
-                required_error: "Epayco is required",
-                invalid_type_error: "Epayco must be a number"
+                required_error: "rappi is required",
+                invalid_type_error: "rappi must be a number"
             }).nonnegative()
         ),
         ventas_cafe: z.optional(
